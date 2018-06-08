@@ -10,7 +10,7 @@ import UIKit
 
 class ControllerViewCell: UICollectionViewCell {
     
-    @IBOutlet weak var imagemUsuario: UIImageView!
-    @IBOutlet weak var nomeUsuario: UILabel!
-    @IBOutlet weak var conversaUsuario: UILabel!
+    @IBOutlet weak var imagemUsuarioCell: UIImageView!
+    @IBOutlet weak var nomeUsuarioCell: UILabel!
+    @IBOutlet weak var previewConversaCell: UILabel!
 }

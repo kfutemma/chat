@@ -8,13 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		2F59341320B5EA8100F2EAC7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F59341220B5EA8100F2EAC7 /* AppDelegate.swift */; };
-		2F59341520B5EA8100F2EAC7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F59341420B5EA8100F2EAC7 /* ViewController.swift */; };
+		2F59341520B5EA8100F2EAC7 /* TelaConversaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F59341420B5EA8100F2EAC7 /* TelaConversaViewController.swift */; };
 		2F59341820B5EA8100F2EAC7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F59341620B5EA8100F2EAC7 /* Main.storyboard */; };
 		2F59341A20B5EA8300F2EAC7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F59341920B5EA8300F2EAC7 /* Assets.xcassets */; };
 		2F59341D20B5EA8300F2EAC7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F59341B20B5EA8300F2EAC7 /* LaunchScreen.storyboard */; };
 		2F59344120B5EB0F00F2EAC7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F59344020B5EB0F00F2EAC7 /* GoogleService-Info.plist */; };
 		2F59344420B5EE1D00F2EAC7 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F59344320B5EE1D00F2EAC7 /* LoginController.swift */; };
-		2F807C6920C5C6CB00D3D242 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F807C6820C5C6CB00D3D242 /* CollectionViewController.swift */; };
 		2F807C6D20C5CB0A00D3D242 /* ControllerViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F807C6C20C5CB0A00D3D242 /* ControllerViewCell.swift */; };
 		2FDDF4F420B748F200D6D159 /* RegistrarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDDF4F320B748F200D6D159 /* RegistrarController.swift */; };
 		70E6453606DDA35FFE650027 /* Pods_ChatUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8B2EF282249E5BD004FA974 /* Pods_ChatUITests.framework */; };
@@ -45,7 +44,7 @@
 		286652E4753CBA6ACEA918C1 /* Pods-ChatUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChatUITests/Pods-ChatUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		2F59340F20B5EA8100F2EAC7 /* Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F59341220B5EA8100F2EAC7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		2F59341420B5EA8100F2EAC7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		2F59341420B5EA8100F2EAC7 /* TelaConversaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelaConversaViewController.swift; sourceTree = "<group>"; };
 		2F59341720B5EA8100F2EAC7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2F59341920B5EA8300F2EAC7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2F59341C20B5EA8300F2EAC7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -54,7 +53,6 @@
 		2F59342E20B5EA8300F2EAC7 /* ChatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F59344020B5EB0F00F2EAC7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2F59344320B5EE1D00F2EAC7 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
-		2F807C6820C5C6CB00D3D242 /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		2F807C6C20C5CB0A00D3D242 /* ControllerViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerViewCell.swift; sourceTree = "<group>"; };
 		2FDDF4F320B748F200D6D159 /* RegistrarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrarController.swift; sourceTree = "<group>"; };
 		414050900EF76571D6DFB27E /* Pods_ChatTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -119,7 +117,6 @@
 				2F807C6720C5C53900D3D242 /* Layout */,
 				2F59344220B5EDF800F2EAC7 /* Controller */,
 				2F59341220B5EA8100F2EAC7 /* AppDelegate.swift */,
-				2F59341420B5EA8100F2EAC7 /* ViewController.swift */,
 				2F59341620B5EA8100F2EAC7 /* Main.storyboard */,
 				2F59341920B5EA8300F2EAC7 /* Assets.xcassets */,
 				2F59341B20B5EA8300F2EAC7 /* LaunchScreen.storyboard */,
@@ -141,7 +138,7 @@
 		2F807C6720C5C53900D3D242 /* Layout */ = {
 			isa = PBXGroup;
 			children = (
-				2F807C6820C5C6CB00D3D242 /* CollectionViewController.swift */,
+				2F59341420B5EA8100F2EAC7 /* TelaConversaViewController.swift */,
 				2F807C6C20C5CB0A00D3D242 /* ControllerViewCell.swift */,
 			);
 			path = Layout;
@@ -387,12 +384,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F59341520B5EA8100F2EAC7 /* ViewController.swift in Sources */,
+				2F59341520B5EA8100F2EAC7 /* TelaConversaViewController.swift in Sources */,
 				2F59344420B5EE1D00F2EAC7 /* LoginController.swift in Sources */,
 				2F807C6D20C5CB0A00D3D242 /* ControllerViewCell.swift in Sources */,
 				2F59341320B5EA8100F2EAC7 /* AppDelegate.swift in Sources */,
 				2FDDF4F420B748F200D6D159 /* RegistrarController.swift in Sources */,
-				2F807C6920C5C6CB00D3D242 /* CollectionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
