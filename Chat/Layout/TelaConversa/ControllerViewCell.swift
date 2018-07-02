@@ -13,4 +13,5 @@ class ControllerViewCell: UICollectionViewCell {
     @IBOutlet weak var imagemUsuarioCell: UIImageView!
     @IBOutlet weak var nomeUsuarioCell: UILabel!
     @IBOutlet weak var previewConversaCell: UILabel!
+    
 }

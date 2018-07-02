@@ -138,10 +138,26 @@
 		2F807C6720C5C53900D3D242 /* Layout */ = {
 			isa = PBXGroup;
 			children = (
-				2F59341420B5EA8100F2EAC7 /* TelaConversaViewController.swift */,
-				2F807C6C20C5CB0A00D3D242 /* ControllerViewCell.swift */,
+				2FBA9D5620D04DCE00804C24 /* TelaPerfil */,
+				2FBA9D5520D04DB200804C24 /* TelaConversa */,
 			);
 			path = Layout;
+			sourceTree = "<group>";
+		};
+		2FBA9D5520D04DB200804C24 /* TelaConversa */ = {
+			isa = PBXGroup;
+			children = (
+				2F807C6C20C5CB0A00D3D242 /* ControllerViewCell.swift */,
+				2F59341420B5EA8100F2EAC7 /* TelaConversaViewController.swift */,
+			);
+			path = TelaConversa;
+			sourceTree = "<group>";
+		};
+		2FBA9D5620D04DCE00804C24 /* TelaPerfil */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = TelaPerfil;
 			sourceTree = "<group>";
 		};
 		6B67F0A9E22BA7F0453A6311 /* Frameworks */ = {
