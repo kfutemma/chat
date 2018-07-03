@@ -1,99 +1,181 @@
 //
-//  LoginController.swift
+//  LoginController_1.swift
 //  Chat
 //
-//  Created by Kaique Futemma on 23/05/18.
+//  Created by Kaique Futemma on 02/07/18.
 //  Copyright © 2018 Kaique Futemma. All rights reserved.
 //
 
 import UIKit
-import FirebaseCore
-import FirebaseAuth
 
-class LoginController: UIViewController, UITextFieldDelegate {
-
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var senhaTexField: UITextField!
+class LoginController: UIViewController {
     
-    var userID:Any!
+    let inputsContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 5
+        view.layer.masksToBounds = true
+        return view
+    }()
     
-
+    let loginRegisterButton: UIButton = {
+        let button = UIButton(type: UIButtonType.system)
+        button.backgroundColor = UIColor(r: 80, g:101, b:161)
+        button.setTitle("Registrar", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        
+        return button
+    }()
+    
+    // _______ CAMPO DE NOME _______
+    let nameTextField: UITextField = {
+        let tf = UITextField()
+        tf.placeholder = "Nome"
+        tf.translatesAutoresizingMaskIntoConstraints = false
+        
+        return tf
+    }()
+    
+    let nameSeparatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(r: 220, g:220, b:220)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
+    // _______ CAMPO DE EMAIL _______
+    let emailTextField: UITextField = {
+        let tf = UITextField()
+        tf.placeholder = "Email"
+        tf.translatesAutoresizingMaskIntoConstraints = false
+        
+        return tf
+    }()
+    
+    let emailSeparatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(r: 220, g:220, b:220)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    // _______ CAMPO DE SENHA _______
+    
+    let passwordTextField: UITextField = {
+        let tf = UITextField()
+        tf.placeholder = "Senha"
+        tf.isSecureTextEntry = true
+        tf.translatesAutoresizingMaskIntoConstraints = false
+        
+        return tf
+    }()
+    
+    // __________ IMAGEM
+    
+    let profileImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "kaique")
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = imageView.
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return imageView
+    }()
+    
+    // __________________________________________________
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.backgroundColor = UIColor(r: 61, g:91, b:151)
         
-        emailTextField.delegate = self
-        senhaTexField.delegate = self
+        view.addSubview(inputsContainerView)
+        view.addSubview(loginRegisterButton)
+        view.addSubview(profileImageView)
         
-        senhaTexField.isSecureTextEntry = true
+        setupInputsContainerView()
+        setupLoginRegisterButton()
+        setupProfileImageView()
         
-        self.hideKeyBoardWhenTapped()
+    }
+    
+    func setupInputsContainerView(){
+        //Constraints (Direito, esquerd, superior e inferior)
+        inputsContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        inputsContainerView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        inputsContainerView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
+        inputsContainerView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        
+        // _______ CAMPO DE NOME _______
+        inputsContainerView.addSubview(nameTextField)
+        inputsContainerView.addSubview(nameSeparatorView)
+        
+        nameTextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
+        nameTextField.topAnchor.constraint(equalTo: inputsContainerView.topAnchor).isActive = true
+        nameTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
+        nameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/3).isActive = true
+        
+        nameSeparatorView.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor).isActive = true
+        nameSeparatorView.topAnchor.constraint(equalTo: nameTextField.bottomAnchor).isActive = true
+        nameSeparatorView.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
+        nameSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        
+        // _______ CAMPO DE EMAIL _______
+        inputsContainerView.addSubview(emailTextField)
+        inputsContainerView.addSubview(emailSeparatorView)
+        
+        emailTextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
+        emailTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor).isActive = true
+        emailTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
+        emailTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/3).isActive = true
+        
+        emailSeparatorView.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor).isActive = true
+        emailSeparatorView.topAnchor.constraint(equalTo: emailTextField.bottomAnchor).isActive = true
+        emailSeparatorView.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
+        emailSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        
+        // _______ CAMPO DE SENHA _______
+        inputsContainerView.addSubview(passwordTextField)
+        
+        passwordTextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
+        passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor).isActive = true
+        passwordTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
+        passwordTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/3).isActive = true
+        
+        
+    }
+    
+    func setupLoginRegisterButton(){
+        loginRegisterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        loginRegisterButton.topAnchor.constraint(equalTo: inputsContainerView.bottomAnchor, constant: 12).isActive = true
+        loginRegisterButton.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
+        loginRegisterButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+    
+    func setupProfileImageView(){
+        profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        profileImageView.bottomAnchor.constraint(equalTo: inputsContainerView.topAnchor, constant: -12).isActive = true
+        profileImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        profileImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
     }
     
     
-    @IBAction func btnEntrarClick(_ sender: UIButton) {
-        print("Clicou")
-        Auth.auth().signIn(withEmail: emailTextField.text!, password: senhaTexField.text!) { (user, error) in
-            if error != nil {
-                let loginErrorAlert = UIAlertController(title: "Erro de Login...", message: "\(error!.localizedDescription) Por favior, tente novamente.", preferredStyle: .alert)
-                loginErrorAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(loginErrorAlert, animated: true, completion: nil)
-                return
-            }
-            
-            
-            if  user?.user.isEmailVerified == true{
-                self.userID = Auth.auth().currentUser?.uid
-                self.performSegue(withIdentifier: "emailLoggedIn", sender: self)
-            }
-            else {
-                let notVerifiedAlert = UIAlertController(title: "Erro de Verificaçào", message: "Sua conta precisa ser verificada. Acesse seu email e verifique sua conta.", preferredStyle: .alert)
-                notVerifiedAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(notVerifiedAlert, animated: true, completion: nil)
-                
-                do{
-                    try Auth.auth().signOut()
-                } catch {
-                    //handle error
-                }
-            }
-        }
-    }
-    
-    
-    @IBAction func forgotPswClick(_ sender: UIButton) {
-        print("clicado!")
-        let forgotPswAlert = UIAlertController(title: "Esqueci minha senha", message: "Não se preocupe, vamos criar uma senha nova!", preferredStyle: .alert)
-        forgotPswAlert.addTextField { (textField) in
-            textField.placeholder = "Entre com seu endereço de email"
-        }
-        forgotPswAlert.addAction(UIAlertAction(title: "Cancelar", style: .cancel, handler: nil))
-        forgotPswAlert.addAction(UIAlertAction(title: "Criar nova senha", style: .default, handler: { (action) in
-            let resetEmail = forgotPswAlert.textFields?.first?.text
-            Auth.auth().sendPasswordReset(withEmail: resetEmail!, completion: { (error) in
-                if error != nil {
-                    let resetFailedAlert = UIAlertController(title: "Erro de recuperação de senha", message: "\(String(describing: error?.localizedDescription))", preferredStyle: .alert)
-                    resetFailedAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    self.present(resetFailedAlert, animated: true, completion: nil)
-                }
-                else{
-                    let resetEmailSentAlert = UIAlertController(title: "Email de nova senha enviado", message: "Um email para a criação de uma nova senha foi enviado para a conta registrada! Siga as instruções do email para saber como criar uma nova senha.", preferredStyle: .alert)
-                    resetEmailSentAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    self.present(resetEmailSentAlert, animated: true, completion: nil)
-                    
-                }
-            })
-        }))
-        self.present(forgotPswAlert, animated: true, completion: nil)
-    }
-    
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if (emailTextField) != nil{
-            senhaTexField.becomeFirstResponder()
-        }
-        else{
-            textField.resignFirstResponder()
-        }
-        return true
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
 }
+
+
+extension UIColor {
+    convenience init(r: CGFloat, g: CGFloat, b: CGFloat){
+    self.init(red: r/255, green: g/255, blue: b/255, alpha: 1)
+    }
+}
+
+
+
