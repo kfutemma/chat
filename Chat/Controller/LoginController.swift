@@ -1,5 +1,5 @@
 //
-//  LoginController_1.swift
+//  LoginController.swift
 //  Chat
 //
 //  Created by Kaique Futemma on 02/07/18.
@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import Firebase
 
 class LoginController: UIViewController {
     
+    //_______ Layer dos textFields _______
     let inputsContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
@@ -19,7 +21,8 @@ class LoginController: UIViewController {
         return view
     }()
     
-    let loginRegisterButton: UIButton = {
+    // _______ BOTAO DE REGISTRAR _______
+    lazy var loginRegisterButton: UIButton = {
         let button = UIButton(type: UIButtonType.system)
         button.backgroundColor = UIColor(r: 80, g:101, b:161)
         button.setTitle("Registrar", for: .normal)
@@ -27,10 +30,47 @@ class LoginController: UIViewController {
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         
+        button.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
+        
         return button
     }()
     
-    // _______ CAMPO DE NOME _______
+    @objc func handleRegister(){
+        
+        guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text else {
+                print("Form is not valid")
+            return
+        }
+        
+        Auth.auth().createUser(withEmail: email, password: password, completion: {
+            (user , error) in
+            
+            if error != nil{
+                print(error!)
+                return
+            }
+            
+            guard let uid = user?.user.uid else{
+                return
+            }
+            
+            let ref = Database.database().reference(fromURL: "https://chat-22387.firebaseio.com/")
+            let usersReference = ref.child("users").child(uid)
+            let values = ["name": name, "email": email]
+            
+            usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
+                
+                if err != nil {
+                    print(err!)
+                    return
+                }
+                
+                print("salvou usuario o banco de dados")
+            })
+        })
+    }
+    
+    // _______ CAMPO E SEPARADOR DE NOME _______
     let nameTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Nome"
@@ -47,10 +87,11 @@ class LoginController: UIViewController {
         return view
     }()
     
-    // _______ CAMPO DE EMAIL _______
+    // _______ CAMPO E SEPARADOR DE EMAIL _______
     let emailTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Email"
+        tf.keyboardType = .emailAddress
         tf.translatesAutoresizingMaskIntoConstraints = false
         
         return tf
@@ -74,13 +115,13 @@ class LoginController: UIViewController {
         return tf
     }()
     
-    // __________ IMAGEM
+    // _______ IMAGEM DA TELA INICIAL_______
     
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "kaique")
         imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = imageView.
+        imageView.layer.cornerRadius = 5.0
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -151,6 +192,7 @@ class LoginController: UIViewController {
     }
     
     func setupLoginRegisterButton(){
+        //Constraints (Direito, esquerd, superior e inferior)
         loginRegisterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginRegisterButton.topAnchor.constraint(equalTo: inputsContainerView.bottomAnchor, constant: 12).isActive = true
         loginRegisterButton.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
@@ -158,15 +200,11 @@ class LoginController: UIViewController {
     }
     
     func setupProfileImageView(){
+        //Constraints (Direito, esquerd, superior e inferior)
         profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         profileImageView.bottomAnchor.constraint(equalTo: inputsContainerView.topAnchor, constant: -12).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
-    }
-    
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
     }
 }
 
