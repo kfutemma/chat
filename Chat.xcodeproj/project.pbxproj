@@ -17,7 +17,7 @@
 		2F807C6D20C5CB0A00D3D242 /* ControllerViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F807C6C20C5CB0A00D3D242 /* ControllerViewCell.swift */; };
 		2FD070C620EAE284002634FE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD070C520EAE284002634FE /* ViewController.swift */; };
 		2FD070C820EAE3AC002634FE /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD070C720EAE3AC002634FE /* LoginController.swift */; };
-		2FD070CA20ECE70E002634FE /* RegistrarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD070C920ECE70E002634FE /* RegistrarController.swift */; };
+		2FD070CA20ECE70E002634FE /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD070C920ECE70E002634FE /* RegisterController.swift */; };
 		2FDDF4F420B748F200D6D159 /* RegistrarController_old.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDDF4F320B748F200D6D159 /* RegistrarController_old.swift */; };
 		70E6453606DDA35FFE650027 /* Pods_ChatUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8B2EF282249E5BD004FA974 /* Pods_ChatUITests.framework */; };
 		83BFF6C5CAF98D8A0B879D73 /* Pods_ChatTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 414050900EF76571D6DFB27E /* Pods_ChatTests.framework */; };
@@ -59,7 +59,7 @@
 		2F807C6C20C5CB0A00D3D242 /* ControllerViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerViewCell.swift; sourceTree = "<group>"; };
 		2FD070C520EAE284002634FE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		2FD070C720EAE3AC002634FE /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
-		2FD070C920ECE70E002634FE /* RegistrarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrarController.swift; sourceTree = "<group>"; };
+		2FD070C920ECE70E002634FE /* RegisterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
 		2FDDF4F320B748F200D6D159 /* RegistrarController_old.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrarController_old.swift; sourceTree = "<group>"; };
 		414050900EF76571D6DFB27E /* Pods_ChatTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DC57A5B6E6F09BD4190870A /* Pods-ChatTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChatTests/Pods-ChatTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -139,7 +139,7 @@
 				2F59344320B5EE1D00F2EAC7 /* LoginController_old.swift */,
 				2FDDF4F320B748F200D6D159 /* RegistrarController_old.swift */,
 				2FD070C720EAE3AC002634FE /* LoginController.swift */,
-				2FD070C920ECE70E002634FE /* RegistrarController.swift */,
+				2FD070C920ECE70E002634FE /* RegisterController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -412,7 +412,7 @@
 				2FD070C620EAE284002634FE /* ViewController.swift in Sources */,
 				2FD070C820EAE3AC002634FE /* LoginController.swift in Sources */,
 				2F59341520B5EA8100F2EAC7 /* TelaConversaViewController.swift in Sources */,
-				2FD070CA20ECE70E002634FE /* RegistrarController.swift in Sources */,
+				2FD070CA20ECE70E002634FE /* RegisterController.swift in Sources */,
 				2F59344420B5EE1D00F2EAC7 /* LoginController_old.swift in Sources */,
 				2F807C6D20C5CB0A00D3D242 /* ControllerViewCell.swift in Sources */,
 				2F59341320B5EA8100F2EAC7 /* AppDelegate.swift in Sources */,
