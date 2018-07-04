@@ -104,11 +104,28 @@ class LoginController: UIViewController {
         
         return view
     }()
-    // _______ CAMPO DE SENHA _______
+    // _______ CAMPOAS DE SENHAS _______
     
     let passwordTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Senha"
+        tf.isSecureTextEntry = true
+        tf.translatesAutoresizingMaskIntoConstraints = false
+        
+        return tf
+    }()
+    
+    let passwordSeparatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(r: 220, g:220, b:220)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
+    let password2TextField: UITextField = {
+        let tf = UITextField()
+        tf.placeholder = "Confirmar Senha"
         tf.isSecureTextEntry = true
         tf.translatesAutoresizingMaskIntoConstraints = false
         
@@ -128,6 +145,24 @@ class LoginController: UIViewController {
         return imageView
     }()
     
+    // _______ JA TENHO UM CONTA LABEL,SEPARADOR E BOTAO_______
+    let haveAccountButton: UIButton = {
+        let button = UIButton(type: UIButtonType.system)
+        button.setTitle("Já possui uma conta?", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(UIColor.white, for: .normal)
+        
+        return button
+    }()
+    
+    let haveAccountSeparatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(r: 220, g:220, b:220)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
     // __________________________________________________
     
     override func viewDidLoad() {
@@ -138,10 +173,28 @@ class LoginController: UIViewController {
         view.addSubview(inputsContainerView)
         view.addSubview(loginRegisterButton)
         view.addSubview(profileImageView)
+        view.addSubview(haveAccountSeparatorView)
+        view.addSubview(haveAccountButton)
         
         setupInputsContainerView()
         setupLoginRegisterButton()
         setupProfileImageView()
+        setupAccountButton()
+        
+    }
+    
+    func setupAccountButton(){
+        //Constraints (Direito, esquerd, superior e inferior)
+        
+        haveAccountButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        haveAccountButton.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -70).isActive = true
+        haveAccountButton.widthAnchor.constraint(equalTo: haveAccountSeparatorView.widthAnchor).isActive = true
+        haveAccountButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        haveAccountSeparatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        haveAccountSeparatorView.bottomAnchor.constraint(equalTo: haveAccountButton.topAnchor, constant: -12).isActive = true
+        haveAccountSeparatorView.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
+        haveAccountSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
     }
     
@@ -150,7 +203,7 @@ class LoginController: UIViewController {
         inputsContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         inputsContainerView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         inputsContainerView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
-        inputsContainerView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        inputsContainerView.heightAnchor.constraint(equalToConstant: 200).isActive = true
         
         // _______ CAMPO DE NOME _______
         inputsContainerView.addSubview(nameTextField)
@@ -159,7 +212,7 @@ class LoginController: UIViewController {
         nameTextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
         nameTextField.topAnchor.constraint(equalTo: inputsContainerView.topAnchor).isActive = true
         nameTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
-        nameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/3).isActive = true
+        nameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/4).isActive = true
         
         nameSeparatorView.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor).isActive = true
         nameSeparatorView.topAnchor.constraint(equalTo: nameTextField.bottomAnchor).isActive = true
@@ -173,21 +226,32 @@ class LoginController: UIViewController {
         emailTextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
         emailTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor).isActive = true
         emailTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
-        emailTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/3).isActive = true
+        emailTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/4).isActive = true
         
         emailSeparatorView.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor).isActive = true
         emailSeparatorView.topAnchor.constraint(equalTo: emailTextField.bottomAnchor).isActive = true
         emailSeparatorView.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
         emailSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
-        // _______ CAMPO DE SENHA _______
+        // _______ CAMPOS DE SENHAS _______
         inputsContainerView.addSubview(passwordTextField)
+        inputsContainerView.addSubview(passwordSeparatorView)
+        inputsContainerView.addSubview(password2TextField)
         
         passwordTextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
         passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor).isActive = true
         passwordTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
-        passwordTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/3).isActive = true
+        passwordTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/4).isActive = true
         
+        passwordSeparatorView.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor).isActive = true
+        passwordSeparatorView.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor).isActive = true
+        passwordSeparatorView.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
+        passwordSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        
+        password2TextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
+        password2TextField.topAnchor.constraint(equalTo: passwordSeparatorView.bottomAnchor).isActive = true
+        password2TextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
+        password2TextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/4).isActive = true
         
     }
     
@@ -205,6 +269,15 @@ class LoginController: UIViewController {
         profileImageView.bottomAnchor.constraint(equalTo: inputsContainerView.topAnchor, constant: -12).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+    }
+    
+    override open var shouldAutorotate: Bool {
+        return false
     }
 }
 
