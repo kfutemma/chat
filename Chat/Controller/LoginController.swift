@@ -11,6 +11,7 @@ import Firebase
 
 class LoginController: UIViewController {
     
+    var userID:Any!
     //_______ Layer dos textFields _______
     let inputsContainerView: UIView = {
         let view = UIView()
@@ -61,10 +62,49 @@ class LoginController: UIViewController {
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         
-        //button.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         
         return button
     }()
+    
+    @objc func handleLogin(){
+        
+        guard let email = emailTextField.text, let password = passwordTextField.text
+            else {
+                print("Form is not valid")
+            return
+        }
+        
+        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+            
+            if error != nil {
+                let loginErrorAlert = UIAlertController(title: "Erro de Login...", message: "\(error!.localizedDescription) Por favor, tente novamente.", preferredStyle: .alert)
+                loginErrorAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(loginErrorAlert, animated: true, completion: nil)
+                return
+            }
+            
+            
+            if  user?.user.isEmailVerified == true{
+                self.userID = Auth.auth().currentUser?.uid
+                //self.performSegue(withIdentifier: "emailLoggedIn", sender: self)
+                self.dismiss(animated: true, completion: nil)
+            }
+            else {
+                let notVerifiedAlert = UIAlertController(title: "Erro de Verificação", message: "Sua conta precisa ser verificada. Acesse seu email e verifique sua conta.", preferredStyle: .alert)
+                notVerifiedAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(notVerifiedAlert, animated: true, completion: nil)
+                
+                do{
+                    try Auth.auth().signOut()
+                } catch let errorVerification{
+                    let errorVerifiedAlert = UIAlertController(title: "Erro de Verificação", message: "\(errorVerification).", preferredStyle: .alert)
+                    errorVerifiedAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(errorVerifiedAlert, animated: true, completion: nil)
+                }
+            }
+        }
+    }
     
     // _______ JA TENHO UMA CONTA LABEL,SEPARADOR E BOTAO_______
     lazy var createAccountButton: UIButton = {
@@ -106,7 +146,7 @@ class LoginController: UIViewController {
         setupInputsContainerView()
         setupAccountButton()
         setupLoginRegisterButton()
-        self.hideKeyBoardWhenTapped()
+        //self.hideKeyBoardWhenTapped()
         
     }
     

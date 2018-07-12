@@ -35,41 +35,6 @@ class RegisterController: UIViewController {
         return button
     }()
     
-    @objc func handleRegister(){
-        
-        guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text else {
-            print("Form is not valid")
-            return
-        }
-        
-        Auth.auth().createUser(withEmail: email, password: password, completion: {
-            (user , error) in
-            
-            if error != nil{
-                print(error!)
-                return
-            }
-            
-            guard let uid = user?.user.uid else{
-                return
-            }
-            
-            let ref = Database.database().reference(fromURL: "https://chat-22387.firebaseio.com/")
-            let usersReference = ref.child("users").child(uid)
-            let values = ["name": name, "email": email]
-            
-            usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
-                
-                if err != nil {
-                    print(err!)
-                    return
-                }
-                
-                print("salvou usuario o banco de dados")
-            })
-        })
-    }
-    
     // _______ CAMPO E SEPARADOR DE NOME _______
     let nameTextField: UITextField = {
         let tf = UITextField()
@@ -170,7 +135,17 @@ class RegisterController: UIViewController {
         return view
     }()
     
-    // __________________________________________________
+    let alertCreateAccount: UIAlertController = {
+        let emailSendAlert = UIAlertController(title: "Confirmar conta", message: "Uma mensagem de confirmarmação foi enviada ao email cadastrado.", preferredStyle: .alert)
+        emailSendAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+    
+        return emailSendAlert
+    }()
+    // ______________________________________________________________________________________________
+    // ______________________________________________________________________________________________
+    // ______________________________________________________________________________________________
+    // ______________________________________________________________________________________________
+    // ______________________________________________________________________________________________
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -187,7 +162,7 @@ class RegisterController: UIViewController {
         setupLoginRegisterButton()
         //setupProfileImageView()
         setupAccountButton()
-        self.hideKeyBoardWhenTapped()
+        //self.hideKeyBoardWhenTapped()
         
     }
     
@@ -279,6 +254,89 @@ class RegisterController: UIViewController {
         profileImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
     }
     
+    @objc func handleRegister(){
+        
+        guard let email = emailTextField.text, let password = passwordTextField.text, let password2 = password2TextField.text,let name = nameTextField.text else {
+            print("Form is not valid")
+            return
+        }
+        
+        if (password == password2) {
+            Auth.auth().createUser(withEmail: email, password: password, completion: {
+                (user , error) in
+                
+                if error != nil{
+                    let registrarErroAlerta = UIAlertController(title: "Algo deu errado no registro", message: "\(String(describing: error?.localizedDescription)) Tente novamente.", preferredStyle: .alert)
+                    registrarErroAlerta.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(registrarErroAlerta, animated: true, completion: nil)
+                    return
+                }
+                
+                guard let uid = user?.user.uid else{
+                    return
+                }
+                
+                let ref = Database.database().reference(fromURL: "https://chat-22387.firebaseio.com/")
+                let usersReference = ref.child("users").child(uid)
+                let values = ["name": name, "email": email]
+                
+                usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
+                    
+                    if err != nil {
+                        print(err!)
+                        return
+                    }
+                    
+                    print("salvou usuario o banco de dados")
+                })
+                
+                self.enviarEmail()
+                self.present(self.alertCreateAccount, animated: true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
+            })
+        }
+        else {
+            let pswNotMatchAlert = UIAlertController(title: "Opa!", message: "As senhas não são iguais. Digite-as novamente!", preferredStyle: .alert)
+            pswNotMatchAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: {(action) in
+                self.passwordTextField.text = ""
+                self.password2TextField.text = ""
+            }))
+            present(pswNotMatchAlert, animated: true, completion: nil)
+        }
+    }
+    
+    func enviarEmail(){
+        
+        guard let email = emailTextField.text, let password = passwordTextField.text else {
+            print("Form is not valid")
+            return
+        }
+        
+        Auth.auth().signIn(withEmail: email, password: password, completion: {(user, error) in
+            if error != nil {
+                print("Erro: \(error!.localizedDescription)")
+                
+                return
+            }
+            
+            Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
+                
+                if error != nil {
+                    let emailNotSendAlert = UIAlertController(title: "Algo deu errado com o Email", message: "\(String(describing: error?.localizedDescription)) Tente novamente.", preferredStyle: .alert)
+                    emailNotSendAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(emailNotSendAlert, animated: true, completion: nil)
+                }
+                do {
+                    try Auth.auth().signOut()
+                }
+                catch {
+                    // ERROR HANDLING
+                }
+                
+            })
+        })
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -289,12 +347,6 @@ class RegisterController: UIViewController {
     }
 }
 
-
-extension UIColor {
-    convenience init(r: CGFloat, g: CGFloat, b: CGFloat){
-        self.init(red: r/255, green: g/255, blue: b/255, alpha: 1)
-    }
-}
 
 
 

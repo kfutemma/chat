@@ -40,7 +40,6 @@ class LoginController_old: UIViewController, UITextFieldDelegate {
                 return
             }
             
-            
             if  user?.user.isEmailVerified == true{
                 self.userID = Auth.auth().currentUser?.uid
                 self.performSegue(withIdentifier: "emailLoggedIn", sender: self)
