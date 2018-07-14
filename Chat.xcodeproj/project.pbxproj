@@ -9,14 +9,15 @@
 /* Begin PBXBuildFile section */
 		2F59341320B5EA8100F2EAC7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F59341220B5EA8100F2EAC7 /* AppDelegate.swift */; };
 		2F59341820B5EA8100F2EAC7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F59341620B5EA8100F2EAC7 /* Main.storyboard */; };
-		2F59341A20B5EA8300F2EAC7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F59341920B5EA8300F2EAC7 /* Assets.xcassets */; };
 		2F59341D20B5EA8300F2EAC7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F59341B20B5EA8300F2EAC7 /* LaunchScreen.storyboard */; };
 		2F59344120B5EB0F00F2EAC7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F59344020B5EB0F00F2EAC7 /* GoogleService-Info.plist */; };
 		2F81B7D020F2A3D0006E6C0D /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F81B7CF20F2A3D0006E6C0D /* NewMessageController.swift */; };
 		2F81B7D220F50EA3006E6C0D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F81B7D120F50EA3006E6C0D /* User.swift */; };
-		2F81B7D520F58DC7006E6C0D /* MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F81B7D420F58DC7006E6C0D /* MenuBar.swift */; };
+		2F81B7D520F58DC7006E6C0D /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F81B7D420F58DC7006E6C0D /* CustomTabBarController.swift */; };
 		2F81B7D820F68E4D006E6C0D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F81B7D720F68E4D006E6C0D /* Extensions.swift */; };
 		2F81B7DC20F6C4A9006E6C0D /* default-picture_0_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F81B7DB20F6C4A9006E6C0D /* default-picture_0_0.png */; };
+		2F81B7DE20F973F4006E6C0D /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F81B7DD20F973F4006E6C0D /* ProfileController.swift */; };
+		2F81B7E020F9A66D006E6C0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F81B7DF20F9A66D006E6C0D /* Assets.xcassets */; };
 		2FD070C620EAE284002634FE /* MessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD070C520EAE284002634FE /* MessageController.swift */; };
 		2FD070C820EAE3AC002634FE /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD070C720EAE3AC002634FE /* LoginController.swift */; };
 		2FD070CA20ECE70E002634FE /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD070C920ECE70E002634FE /* RegisterController.swift */; };
@@ -49,7 +50,6 @@
 		2F59340F20B5EA8100F2EAC7 /* Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F59341220B5EA8100F2EAC7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2F59341720B5EA8100F2EAC7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		2F59341920B5EA8300F2EAC7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2F59341C20B5EA8300F2EAC7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2F59341E20B5EA8300F2EAC7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2F59342320B5EA8300F2EAC7 /* ChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -57,9 +57,11 @@
 		2F59344020B5EB0F00F2EAC7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2F81B7CF20F2A3D0006E6C0D /* NewMessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		2F81B7D120F50EA3006E6C0D /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		2F81B7D420F58DC7006E6C0D /* MenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBar.swift; sourceTree = "<group>"; };
+		2F81B7D420F58DC7006E6C0D /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		2F81B7D720F68E4D006E6C0D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		2F81B7DB20F6C4A9006E6C0D /* default-picture_0_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default-picture_0_0.png"; sourceTree = "<group>"; };
+		2F81B7DD20F973F4006E6C0D /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
+		2F81B7DF20F9A66D006E6C0D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2FD070C520EAE284002634FE /* MessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageController.swift; sourceTree = "<group>"; };
 		2FD070C720EAE3AC002634FE /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		2FD070C920ECE70E002634FE /* RegisterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
@@ -128,8 +130,8 @@
 				2F59344220B5EDF800F2EAC7 /* Controller */,
 				2F59341220B5EA8100F2EAC7 /* AppDelegate.swift */,
 				2FD070C520EAE284002634FE /* MessageController.swift */,
+				2F81B7DF20F9A66D006E6C0D /* Assets.xcassets */,
 				2F59341620B5EA8100F2EAC7 /* Main.storyboard */,
-				2F59341920B5EA8300F2EAC7 /* Assets.xcassets */,
 				2F81B7DB20F6C4A9006E6C0D /* default-picture_0_0.png */,
 				2F59341B20B5EA8300F2EAC7 /* LaunchScreen.storyboard */,
 				2F59341E20B5EA8300F2EAC7 /* Info.plist */,
@@ -144,6 +146,7 @@
 				2FD070C720EAE3AC002634FE /* LoginController.swift */,
 				2FD070C920ECE70E002634FE /* RegisterController.swift */,
 				2F81B7CF20F2A3D0006E6C0D /* NewMessageController.swift */,
+				2F81B7DD20F973F4006E6C0D /* ProfileController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -159,7 +162,7 @@
 		2F81B7D320F58DAD006E6C0D /* View */ = {
 			isa = PBXGroup;
 			children = (
-				2F81B7D420F58DC7006E6C0D /* MenuBar.swift */,
+				2F81B7D420F58DC7006E6C0D /* CustomTabBarController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -306,8 +309,8 @@
 				2F81B7DC20F6C4A9006E6C0D /* default-picture_0_0.png in Resources */,
 				2F59341D20B5EA8300F2EAC7 /* LaunchScreen.storyboard in Resources */,
 				2F59344120B5EB0F00F2EAC7 /* GoogleService-Info.plist in Resources */,
-				2F59341A20B5EA8300F2EAC7 /* Assets.xcassets in Resources */,
 				2F59341820B5EA8100F2EAC7 /* Main.storyboard in Resources */,
+				2F81B7E020F9A66D006E6C0D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -418,7 +421,8 @@
 				2FD070CA20ECE70E002634FE /* RegisterController.swift in Sources */,
 				2F81B7D220F50EA3006E6C0D /* User.swift in Sources */,
 				2F81B7D820F68E4D006E6C0D /* Extensions.swift in Sources */,
-				2F81B7D520F58DC7006E6C0D /* MenuBar.swift in Sources */,
+				2F81B7DE20F973F4006E6C0D /* ProfileController.swift in Sources */,
+				2F81B7D520F58DC7006E6C0D /* CustomTabBarController.swift in Sources */,
 				2F59341320B5EA8100F2EAC7 /* AppDelegate.swift in Sources */,
 				2F81B7D020F2A3D0006E6C0D /* NewMessageController.swift in Sources */,
 			);

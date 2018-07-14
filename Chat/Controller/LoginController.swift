@@ -87,7 +87,6 @@ class LoginController: UIViewController {
             
             if  user?.user.isEmailVerified == true{
                 self.userID = Auth.auth().currentUser?.uid
-                //self.performSegue(withIdentifier: "emailLoggedIn", sender: self)
                 self.dismiss(animated: true, completion: nil)
             }
             else {

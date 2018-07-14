@@ -47,9 +47,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         */
         
         
-        let layout = UICollectionViewFlowLayout()
-        let friendsController = MessageController(collectionViewLayout: layout)
-        window?.rootViewController = UINavigationController(rootViewController: friendsController)
+        //let layout = UICollectionViewFlowLayout()
+        //let friendsController = MessageController(collectionViewLayout: layout)
+        window?.rootViewController = CustomTabBarController()
         
         return true
     }

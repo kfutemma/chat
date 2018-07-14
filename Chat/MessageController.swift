@@ -25,7 +25,7 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
         
         checkIfUserIsLoggedIn()
 
-        collectionView?.register(FriendCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.register(MessageCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.contentInset = UIEdgeInsetsMake(10, 0, 0, 0)
     }
     
@@ -42,7 +42,6 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
     }
     
     @objc func handleLogout(){
-        
         do{
             try Auth.auth().signOut()
         } catch let logoutError {
@@ -68,7 +67,7 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
     
 }
 
-class FriendCell: BaseCell{
+class MessageCell: BaseCell{
     
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
