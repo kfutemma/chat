@@ -26,3 +26,47 @@ extension UIColor {
         self.init(red: r/255, green: g/255, blue: b/255, alpha: 1)
     }
 }
+
+let imageCache = NSCache<NSString, UIImage>()
+
+extension UIImageView {
+    
+    func loadImagesUsingCacheWithUrlString(urlString: String) {
+        
+        self.image = UIImage(named: "imagem_padrao")
+        
+        //check cache for image first
+        if let cachedImage = imageCache.object(forKey: urlString as NSString) {
+            self.image = cachedImage
+            return
+        }
+        
+        let  requestUrl = URL(string: urlString)
+        let request = URLRequest(url: requestUrl!)
+        
+        (URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if error != nil {
+                print(error!)
+                return
+            }
+            DispatchQueue.main.async {
+                
+                if let downloadedImage = UIImage(data: data!) {
+                    imageCache.setObject(downloadedImage, forKey: urlString as NSString)
+                    
+                    self.image = downloadedImage
+                }
+            }
+        }).resume()
+    }
+        
+}
+
+
+
+
+
+
+
+
+

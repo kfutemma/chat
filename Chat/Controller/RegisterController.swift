@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseStorage
 
 class RegisterController: UIViewController {
     
@@ -265,7 +266,7 @@ class RegisterController: UIViewController {
             Auth.auth().createUser(withEmail: email, password: password, completion: {
                 (user , error) in
                 
-                if error != nil{
+                if error != nil {
                     let registrarErroAlerta = UIAlertController(title: "Algo deu errado no registro", message: "\(String(describing: error?.localizedDescription)) Tente novamente.", preferredStyle: .alert)
                     registrarErroAlerta.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                     self.present(registrarErroAlerta, animated: true, completion: nil)
@@ -276,20 +277,31 @@ class RegisterController: UIViewController {
                     return
                 }
                 
-                let ref = Database.database().reference(fromURL: "https://chat-22387.firebaseio.com/")
-                let usersReference = ref.child("users").child(uid)
-                let values = ["name": name, "email": email]
-                
-                usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
-                    
-                    if err != nil {
-                        print(err!)
-                        return
-                    }
-                    
-                    print("salvou usuario o banco de dados")
-                })
-                
+                let imageName = NSUUID().uuidString
+                let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).jpg")
+            
+                let image = UIImage(named: "imagem_padrao")
+                if let uploadData = UIImageJPEGRepresentation(image!, 0.25) {
+                    storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
+                        if error != nil {
+                            print(error!)
+                            return
+                        }
+                        
+                        storageRef.downloadURL(completion: { (url, err) in
+                            if let err = err{
+                                print("Unable to retrieve URL due to error: \(err.localizedDescription)")
+                            }
+                            let profilePicUrl = "https://firebasestorage.googleapis.com/v0/b/chat-22387.appspot.com/o/default-picture_0_0.png?alt=media&token=014adb7d-eb81-4972-a944-f8716343ab9e"
+        
+                            let values = ["name": name, "email": email, "profileImageUrl": profilePicUrl]
+                            self.registerUserIntoDatabaseWithUID(uid: uid, values: values)
+                            print("Profile Image successfully uploaded into storage with url: \(profilePicUrl)")
+                        })
+                        
+                    })
+                }
+
                 self.enviarEmail()
                 self.present(self.alertCreateAccount, animated: true, completion: nil)
                 self.dismiss(animated: true, completion: nil)
@@ -303,6 +315,21 @@ class RegisterController: UIViewController {
             }))
             present(pswNotMatchAlert, animated: true, completion: nil)
         }
+    }
+    
+    private func registerUserIntoDatabaseWithUID(uid: String, values: [String: String?]){
+        let ref = Database.database().reference(fromURL: "https://chat-22387.firebaseio.com/")
+        let usersReference = ref.child("users").child(uid)
+        
+        usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
+            
+            if err != nil {
+                print(err!)
+                return
+            }
+            
+            print("salvou usuario o banco de dados")
+        })
     }
     
     func enviarEmail(){

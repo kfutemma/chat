@@ -18,6 +18,8 @@
 		2F81B7DC20F6C4A9006E6C0D /* default-picture_0_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F81B7DB20F6C4A9006E6C0D /* default-picture_0_0.png */; };
 		2F81B7DE20F973F4006E6C0D /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F81B7DD20F973F4006E6C0D /* ProfileController.swift */; };
 		2F81B7E020F9A66D006E6C0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F81B7DF20F9A66D006E6C0D /* Assets.xcassets */; };
+		2F81B7E220FA50E9006E6C0D /* ProfileController+Handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F81B7E120FA50E9006E6C0D /* ProfileController+Handlers.swift */; };
+		2F81B7E420FA5866006E6C0D /* LoginController+Handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F81B7E320FA5866006E6C0D /* LoginController+Handlers.swift */; };
 		2FD070C620EAE284002634FE /* MessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD070C520EAE284002634FE /* MessageController.swift */; };
 		2FD070C820EAE3AC002634FE /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD070C720EAE3AC002634FE /* LoginController.swift */; };
 		2FD070CA20ECE70E002634FE /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD070C920ECE70E002634FE /* RegisterController.swift */; };
@@ -62,6 +64,8 @@
 		2F81B7DB20F6C4A9006E6C0D /* default-picture_0_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default-picture_0_0.png"; sourceTree = "<group>"; };
 		2F81B7DD20F973F4006E6C0D /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		2F81B7DF20F9A66D006E6C0D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2F81B7E120FA50E9006E6C0D /* ProfileController+Handlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileController+Handlers.swift"; sourceTree = "<group>"; };
+		2F81B7E320FA5866006E6C0D /* LoginController+Handlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginController+Handlers.swift"; sourceTree = "<group>"; };
 		2FD070C520EAE284002634FE /* MessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageController.swift; sourceTree = "<group>"; };
 		2FD070C720EAE3AC002634FE /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		2FD070C920ECE70E002634FE /* RegisterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
@@ -147,6 +151,8 @@
 				2FD070C920ECE70E002634FE /* RegisterController.swift */,
 				2F81B7CF20F2A3D0006E6C0D /* NewMessageController.swift */,
 				2F81B7DD20F973F4006E6C0D /* ProfileController.swift */,
+				2F81B7E120FA50E9006E6C0D /* ProfileController+Handlers.swift */,
+				2F81B7E320FA5866006E6C0D /* LoginController+Handlers.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -419,7 +425,9 @@
 				2FD070C620EAE284002634FE /* MessageController.swift in Sources */,
 				2FD070C820EAE3AC002634FE /* LoginController.swift in Sources */,
 				2FD070CA20ECE70E002634FE /* RegisterController.swift in Sources */,
+				2F81B7E420FA5866006E6C0D /* LoginController+Handlers.swift in Sources */,
 				2F81B7D220F50EA3006E6C0D /* User.swift in Sources */,
+				2F81B7E220FA50E9006E6C0D /* ProfileController+Handlers.swift in Sources */,
 				2F81B7D820F68E4D006E6C0D /* Extensions.swift in Sources */,
 				2F81B7DE20F973F4006E6C0D /* ProfileController.swift in Sources */,
 				2F81B7D520F58DC7006E6C0D /* CustomTabBarController.swift in Sources */,

@@ -20,7 +20,7 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
         //navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.isTranslucent = false
         self.navigationItem.title = "Conversas"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "logout", style: .plain, target: self, action: #selector(handleLogout))
+
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonSystemItem.add, target: self, action: #selector(handleNewMessage))
         
         checkIfUserIsLoggedIn()
@@ -160,7 +160,7 @@ class BaseCell: UICollectionViewCell{
     }
     
     func setupViews(){
-        //backgroundColor = UIColor.blue
+        //TODO
     }
 }
 
