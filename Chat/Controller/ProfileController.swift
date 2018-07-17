@@ -121,6 +121,39 @@ class ProfileController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: true)
         
         setupScrollView()
+        fetchUser()
+    }
+    
+    func fetchUser() {
+        
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        Database.database().reference().child("users/\(uid)").observeSingleEvent(of: .value, with: { (snapshot) in
+            if let dictionary = snapshot.value as? [String: AnyObject] {
+                let user = User()
+                print("_______________________")
+                print(snapshot)
+                print("_______________________")
+                
+                //user.setValuesForKeys(dictionary)
+                user.email = dictionary["email"] as? String
+                user.name = dictionary["name"] as? String
+                user.profileImageUrl = dictionary["profileImageUrl"] as? String
+                self.setupUserInfos(user: user)
+            }
+        }, withCancel: nil)
+    }
+    
+    
+    func setupUserInfos(user: User) {
+        if let profileImageUrl = user.profileImageUrl {
+            profileImage.loadImagesUsingCacheWithUrlString(urlString: profileImageUrl)
+        }
+        if let profileLabelUser = user.name {
+            nameLabel.text = profileLabelUser
+        }
     }
     
     func setupScrollView(){
@@ -187,7 +220,7 @@ class ProfileController: UIViewController {
         changePasswordSeparatorView.widthAnchor.constraint(equalTo: logoutButton.widthAnchor).isActive = true
         changePasswordSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
- }
+    }
     
 
 }

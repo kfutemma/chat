@@ -22,15 +22,47 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
         self.navigationItem.title = "Conversas"
 
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonSystemItem.add, target: self, action: #selector(handleNewMessage))
-        
-        checkIfUserIsLoggedIn()
-
+    
         collectionView?.register(MessageCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.contentInset = UIEdgeInsetsMake(10, 0, 0, 0)
+        
+        checkIfUserIsLoggedIn()
+        
+        observeMessages()
+    }
+    
+    var messages = [Messages]()
+    
+    func observeMessages() {
+        let ref = Database.database().reference().child("messages")
+        ref.observe(.childAdded, with: { (snapshot) in
+            
+            if let dictionary = snapshot.value as? [String: AnyObject] {
+                let message = Messages()
+                
+                message.fromId = dictionary["fromId"] as? String
+                message.toId = dictionary["toId"] as? String
+                message.text = dictionary["text"] as? String
+                message.timestamp = dictionary["timestamp"] as? NSNumber
+                
+                self.messages.append(message)
+                
+                DispatchQueue.main.async(execute: {
+                    self.collectionView?.reloadData()
+                })
+            }
+        }, withCancel: nil)
+    }
+    
+    func showChatControllerForUser(user: User) {
+        let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
+        chatLogController.user = user
+        navigationController?.pushViewController(chatLogController, animated: true)
     }
     
     @objc func handleNewMessage(){
         let newMessageController = NewMessageController()
+        newMessageController.messagesController = self
         let navController = UINavigationController(rootViewController: newMessageController)
         present(navController, animated: true, completion: nil)
     }
@@ -47,18 +79,24 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
         } catch let logoutError {
             print(logoutError)
         }
-        
-        
         let loginController = LoginController()
         present(loginController, animated: true, completion: nil)
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 6
+        return messages.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MessageCell
+        
+        let message = messages[indexPath.row]
+        
+        
+        
+        return cell
+
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -66,6 +104,8 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
     }
     
 }
+
+//COLOCAR EM OUTRA CLASSE. DAQUI PARA BAIXO
 
 class MessageCell: BaseCell{
     

@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseStorage
 
 extension ProfileController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
@@ -30,12 +31,45 @@ extension ProfileController: UIImagePickerControllerDelegate, UINavigationContro
         else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
             selectedImageFromPicker = originalImage
         }
+
         
         if let selectedImage = selectedImageFromPicker {
-            profileImage.image = selectedImage
+            
+            guard let uid = Auth.auth().currentUser?.uid else{
+                return
+            }
+            
+            let imageName = NSUUID().uuidString
+            let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).jpg")
+            let databaseRef = Database.database().reference()
+            let userRef = databaseRef.root.child("users")
+            
+            if let uploadData = UIImageJPEGRepresentation(selectedImage, 0.25) {
+                storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
+                    if error != nil {
+                        print(error!)
+                        return
+                    }
+                    
+                    storageRef.downloadURL(completion: { (url, error) in
+                        if error != nil {
+                            print(error!)
+                            return
+                        }
+                        if url != nil {
+                            let profilePicUrl = url?.absoluteString
+                            
+                            userRef.child("\(uid)/profileImageUrl").setValue(profilePicUrl!)
+                            print("Profile Image successfully updated into storage with url: \(String(describing: profilePicUrl))")
+                        }
+                        
+                    })
+                })
+                
+                profileImage.image = selectedImage
+            }
+            dismiss(animated: true, completion: nil)
         }
-        
-        dismiss(animated: true, completion: nil)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

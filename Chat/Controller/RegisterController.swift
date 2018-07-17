@@ -8,7 +8,6 @@
 
 import UIKit
 import Firebase
-import FirebaseStorage
 
 class RegisterController: UIViewController {
     
@@ -276,11 +275,12 @@ class RegisterController: UIViewController {
                 guard let uid = user?.user.uid else{
                     return
                 }
-                
+                /*
                 let imageName = NSUUID().uuidString
                 let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).jpg")
             
                 let image = UIImage(named: "imagem_padrao")
+                
                 if let uploadData = UIImageJPEGRepresentation(image!, 0.25) {
                     storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                         if error != nil {
@@ -288,20 +288,23 @@ class RegisterController: UIViewController {
                             return
                         }
                         
-                        storageRef.downloadURL(completion: { (url, err) in
-                            if let err = err{
-                                print("Unable to retrieve URL due to error: \(err.localizedDescription)")
+                        storageRef.downloadURL(completion: { (url, error) in
+                            if error != nil {
+                                print(error!)
+                                return
                             }
-                            let profilePicUrl = "https://firebasestorage.googleapis.com/v0/b/chat-22387.appspot.com/o/default-picture_0_0.png?alt=media&token=014adb7d-eb81-4972-a944-f8716343ab9e"
-        
-                            let values = ["name": name, "email": email, "profileImageUrl": profilePicUrl]
-                            self.registerUserIntoDatabaseWithUID(uid: uid, values: values)
-                            print("Profile Image successfully uploaded into storage with url: \(profilePicUrl)")
-                        })
-                        
-                    })
-                }
+                            if url != nil {
+                                let profilePicUrl = url?.absoluteString
+                            
+                                self.registerUserIntoDatabaseWithUID(uid: uid, name: name, email: email, profileImageUrl: profilePicUrl)
+                                print("Profile Image successfully uploaded into storage with url: \(String(describing: profilePicUrl))")
+                            }
 
+                        })
+                    })
+                }*/
+                self.registerUserIntoDatabaseWithUID(uid: uid, name: name, email: email)
+                
                 self.enviarEmail()
                 self.present(self.alertCreateAccount, animated: true, completion: nil)
                 self.dismiss(animated: true, completion: nil)
@@ -317,9 +320,11 @@ class RegisterController: UIViewController {
         }
     }
     
-    private func registerUserIntoDatabaseWithUID(uid: String, values: [String: String?]){
-        let ref = Database.database().reference(fromURL: "https://chat-22387.firebaseio.com/")
+    private func registerUserIntoDatabaseWithUID(uid: String, name: String, email: String){
+        let ref = Database.database().reference()
         let usersReference = ref.child("users").child(uid)
+        
+        let values = ["name": name, "email": email, "profileImageUrl": "https://firebasestorage.googleapis.com/v0/b/chat-22387.appspot.com/o/default-picture_0_0.png?alt=media&token=014adb7d-eb81-4972-a944-f8716343ab9e"];
         
         usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
             

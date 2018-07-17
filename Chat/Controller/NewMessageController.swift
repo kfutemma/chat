@@ -37,7 +37,9 @@ class NewMessageController: UITableViewController, UISearchResultsUpdating {
         Database.database().reference().child("users").observe(.childAdded) { (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let user = User()
-                print(snapshot)
+                user.id = snapshot.key
+                
+                //print(snapshot)
                 //user.setValuesForKeys(dictionary)
                 user.email = dictionary["email"] as? String
                 user.name = dictionary["name"] as? String
@@ -107,8 +109,23 @@ class NewMessageController: UITableViewController, UISearchResultsUpdating {
         if searchController.isActive && searchController.searchBar.text != "" {
             return filteredUsers.count
         }
-        
-        return self.users.count
+        /*else if searchController.isActive && searchController.searchBar.text == "" {
+            let noDataLabel: UILabel     = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+            noDataLabel.text          = "Faça uma pesquisa!"
+            noDataLabel.textColor     = UIColor.black
+            noDataLabel.textAlignment = .center
+            tableView.backgroundView  = noDataLabel
+            tableView.separatorStyle  = .none
+        }*/
+        else/* if searchController.isActive && searchController.searchBar.text != "" && filteredUsers.count == 0*/{
+            let noDataLabel: UILabel     = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+            noDataLabel.text          = "Faça uma pesquisa!"
+            noDataLabel.textColor     = UIColor.black
+            noDataLabel.textAlignment = .center
+            tableView.backgroundView  = noDataLabel
+            tableView.separatorStyle  = .none
+        }
+        return 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -139,64 +156,16 @@ class NewMessageController: UITableViewController, UISearchResultsUpdating {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 300
     }
-        
-}
-
-class UserCell: UITableViewCell {
     
-    let coverImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.image = UIImage(named: "blue")
-        imageView.layer.masksToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return imageView
-    }()
+    var messagesController: MessageController?
     
-    let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        //imageView.image = UIImage(named: "denis")
-        imageView.layer.cornerRadius = 9.725
-        imageView.layer.borderWidth = 3
-        imageView.layer.borderColor = UIColor.white.cgColor
-        imageView.layer.masksToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return imageView
-    }()
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        textLabel?.frame = CGRect(x: 0, y: textLabel!.frame.origin.y + 100, width: self.frame.width, height: textLabel!.frame.height)
-        detailTextLabel?.frame = CGRect(x: 0, y: detailTextLabel!.frame.origin.y + 100, width: self.frame.width, height: detailTextLabel!.frame.height)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        dismiss(animated: true) {
+            let user = self.users[indexPath.row]
+            self.messagesController?.showChatControllerForUser(user: user)
+            self.dismiss(animated: true, completion: nil)
+        }
     }
-    
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         
-        textLabel?.textAlignment = .center
-        detailTextLabel?.textAlignment = .center
-        setupImagesInCell()
-        
-    }
-    
-    func setupImagesInCell(){
-        addSubview(coverImageView)
-        coverImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        coverImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 3).isActive = true
-        coverImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
-        
-        addSubview(profileImageView)
-        profileImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        profileImageView.widthAnchor.constraint(equalToConstant: 120).isActive = true
-        profileImageView.heightAnchor.constraint(equalToConstant: 120).isActive = true
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 }
 
