@@ -45,9 +45,7 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
         let ref = Database.database().reference().child("user-messages/\(uid)")
         
         ref.observe(.childAdded, with: { (snapshot) in
-            print("-----------------------------------")
-            print(snapshot)
-            print("-----------------------------------")
+
             let messageId = snapshot.key
             let messagesReference = Database.database().reference().child("messages/\(messageId)")
             
@@ -61,8 +59,8 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
                     message.text = dictionary["text"] as? String
                     message.timestamp = dictionary["timestamp"] as? NSNumber
                     
-                    if let toId = message.toId {
-                        self.messagesDictionary[toId] = message
+                    if let chatPartnerId = message.chatPartnerId() {
+                        self.messagesDictionary[chatPartnerId] = message
                         self.messages = Array(self.messagesDictionary.values)
                         self.messages.sort(by: { (message1, message2) -> Bool in
                             return (message1.timestamp?.intValue)! > (message2.timestamp?.intValue)!
