@@ -10,12 +10,6 @@ import UIKit
 
 class UserCell: UITableViewCell {
     
-    var message: Messages? {
-        didSet {
-            
-        }
-    }
-    
     let coverImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill

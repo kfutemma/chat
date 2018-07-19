@@ -11,6 +11,8 @@ import Firebase
 
 class ProfileController: UIViewController {
     
+    var messageController: MessageController?
+    
     lazy var scrollView: UIScrollView = {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -128,7 +130,7 @@ class ProfileController: UIViewController {
         
         guard let uid = Auth.auth().currentUser?.uid else {
             return
-        }
+        } 
         
         Database.database().reference().child("users/\(uid)").observeSingleEvent(of: .value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject] {
@@ -148,6 +150,13 @@ class ProfileController: UIViewController {
     
     
     func setupUserInfos(user: User) {
+        
+        messageController?.messages.removeAll()
+        messageController?.messagesDictionary.removeAll()
+        messageController?.collectionView?.reloadData()
+        
+        messageController?.observeUserMessages()
+        
         if let profileImageUrl = user.profileImageUrl {
             profileImage.loadImagesUsingCacheWithUrlString(urlString: profileImageUrl)
         }

@@ -29,8 +29,9 @@ extension LoginController {
             }
             
             
-            if  user?.user.isEmailVerified == true{
-                self.userID = Auth.auth().currentUser?.uid
+            if  user?.user.isEmailVerified == true {
+                //self.userID = Auth.auth().currentUser?.uid
+                self.profileController?.fetchUser()
                 self.dismiss(animated: true, completion: nil)
             }
             else {

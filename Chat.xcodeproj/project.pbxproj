@@ -10,6 +10,7 @@
 		2F4D12F020FD636E00373093 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F4D12EF20FD636E00373093 /* ChatLogController.swift */; };
 		2F4D12F220FD92D500373093 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F4D12F120FD92D500373093 /* Messages.swift */; };
 		2F4D12F420FEAD0D00373093 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F4D12F320FEAD0D00373093 /* UserCell.swift */; };
+		2F4D12F6210014B300373093 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F4D12F5210014B300373093 /* ChatMessageCell.swift */; };
 		2F59341320B5EA8100F2EAC7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F59341220B5EA8100F2EAC7 /* AppDelegate.swift */; };
 		2F59341820B5EA8100F2EAC7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F59341620B5EA8100F2EAC7 /* Main.storyboard */; };
 		2F59341D20B5EA8300F2EAC7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F59341B20B5EA8300F2EAC7 /* LaunchScreen.storyboard */; };
@@ -55,6 +56,7 @@
 		2F4D12EF20FD636E00373093 /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		2F4D12F120FD92D500373093 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		2F4D12F320FEAD0D00373093 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
+		2F4D12F5210014B300373093 /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		2F59340F20B5EA8100F2EAC7 /* Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F59341220B5EA8100F2EAC7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2F59341720B5EA8100F2EAC7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 			children = (
 				2F81B7D420F58DC7006E6C0D /* CustomTabBarController.swift */,
 				2F4D12F320FEAD0D00373093 /* UserCell.swift */,
+				2F4D12F5210014B300373093 /* ChatMessageCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -439,6 +442,7 @@
 				2F81B7D220F50EA3006E6C0D /* User.swift in Sources */,
 				2F4D12F420FEAD0D00373093 /* UserCell.swift in Sources */,
 				2F4D12F220FD92D500373093 /* Messages.swift in Sources */,
+				2F4D12F6210014B300373093 /* ChatMessageCell.swift in Sources */,
 				2F81B7E220FA50E9006E6C0D /* ProfileController+Handlers.swift in Sources */,
 				2F81B7D820F68E4D006E6C0D /* Extensions.swift in Sources */,
 				2F81B7DE20F973F4006E6C0D /* ProfileController.swift in Sources */,

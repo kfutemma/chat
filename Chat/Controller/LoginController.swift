@@ -11,7 +11,10 @@ import Firebase
 
 class LoginController: UIViewController {
     
-    var userID:Any!
+    //var userID:Any!
+    var profileController: ProfileController?
+    var messagesController: MessageController?
+    
     //_______ Layer dos textFields _______
     let inputsContainerView: UIView = {
         let view = UIView()

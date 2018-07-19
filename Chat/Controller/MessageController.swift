@@ -22,16 +22,62 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
         self.navigationItem.title = "Conversas"
 
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonSystemItem.add, target: self, action: #selector(handleNewMessage))
+        
     
         collectionView?.register(MessageCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.contentInset = UIEdgeInsetsMake(10, 0, 0, 0)
         
         checkIfUserIsLoggedIn()
         
-        observeMessages()
+        observeUserMessages()
+        
     }
     
     var messages = [Messages]()
+    var messagesDictionary = [String: Messages]()
+    
+    func observeUserMessages() {
+        
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        let ref = Database.database().reference().child("user-messages/\(uid)")
+        
+        ref.observe(.childAdded, with: { (snapshot) in
+            print("-----------------------------------")
+            print(snapshot)
+            print("-----------------------------------")
+            let messageId = snapshot.key
+            let messagesReference = Database.database().reference().child("messages/\(messageId)")
+            
+            messagesReference.observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if let dictionary = snapshot.value as? [String: AnyObject] {
+                    let message = Messages()
+                    
+                    message.fromId = dictionary["fromId"] as? String
+                    message.toId = dictionary["toId"] as? String
+                    message.text = dictionary["text"] as? String
+                    message.timestamp = dictionary["timestamp"] as? NSNumber
+                    
+                    if let toId = message.toId {
+                        self.messagesDictionary[toId] = message
+                        self.messages = Array(self.messagesDictionary.values)
+                        self.messages.sort(by: { (message1, message2) -> Bool in
+                            return (message1.timestamp?.intValue)! > (message2.timestamp?.intValue)!
+                        })
+                    }
+                    
+                    DispatchQueue.main.async(execute: {
+                        self.collectionView?.reloadData()
+                    })
+                
+                }
+            }, withCancel: nil)
+            
+        }, withCancel: nil)
+    }
     
     func observeMessages() {
         let ref = Database.database().reference().child("messages")
@@ -44,8 +90,14 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
                 message.toId = dictionary["toId"] as? String
                 message.text = dictionary["text"] as? String
                 message.timestamp = dictionary["timestamp"] as? NSNumber
-                
-                self.messages.append(message)
+
+                if let toId = message.toId {
+                    self.messagesDictionary[toId] = message
+                    self.messages = Array(self.messagesDictionary.values)
+                    self.messages.sort(by: { (message1, message2) -> Bool in
+                        return (message1.timestamp?.intValue)! > (message2.timestamp?.intValue)!
+                    })
+                }
                 
                 DispatchQueue.main.async(execute: {
                     self.collectionView?.reloadData()
@@ -92,7 +144,37 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MessageCell
         
         let message = messages[indexPath.row]
+        //----------------------
         
+        
+        
+        if let id = message.chatPartnerId() {
+            let ref = Database.database().reference().child("users/\(id)")
+            
+            ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if let dictionary = snapshot.value as? [String: AnyObject] {
+                    cell.nameLabel.text = dictionary["name"] as? String
+                    
+                    if let profileImageUrl = dictionary["profileImageUrl"] as? String{
+                        cell.profileImageView.loadImagesUsingCacheWithUrlString(urlString: profileImageUrl)
+                    }
+                }
+                
+            }, withCancel: nil)
+        }
+        //----------------------
+        cell.messageLabel.text = message.text
+        
+        if let seconds = message.timestamp?.doubleValue {
+            let timestampDate = NSDate(timeIntervalSince1970: seconds)
+            
+            let dateFormatter = DateFormatter()
+            
+            dateFormatter.dateFormat = "hh:mm a"
+            cell.timeLabel.text = dateFormatter.string(for: timestampDate)
+        }
+        print("passou")
         
         
         return cell
@@ -101,6 +183,33 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize.init(width: view.frame.width,height: 100)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let message = messages[indexPath.item]
+        
+        guard let chatPartnerId = message.chatPartnerId() else {
+            return
+        }
+        
+        let ref = Database.database().reference().child("users/\(chatPartnerId)")
+        
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            guard let dictionary = snapshot.value as? [String: AnyObject] else {
+                return
+            }
+            
+            let user = User()
+            user.name = dictionary["name"] as? String
+            user.email = dictionary["email"] as? String
+            user.profileImageUrl = dictionary["profileImageUrl"] as? String
+            user.id = chatPartnerId
+            
+            self.showChatControllerForUser(user: user)
+            
+        }, withCancel: nil)
+        
     }
     
 }
