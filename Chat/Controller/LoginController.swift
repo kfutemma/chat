@@ -101,6 +101,7 @@ class LoginController: UIViewController {
         view.addSubview(loginButton)
         view.addSubview(createAccountSeparatorView)
         view.addSubview(createAccountButton)
+        self.hideKeyboardWhenTappedAround() 
         
         setupInputsContainerView()
         setupAccountButton()

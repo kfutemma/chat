@@ -160,8 +160,8 @@
 				2FD070C520EAE284002634FE /* MessageController.swift */,
 				2F81B7CF20F2A3D0006E6C0D /* NewMessageController.swift */,
 				2F81B7DD20F973F4006E6C0D /* ProfileController.swift */,
-				2FD070C920ECE70E002634FE /* RegisterController.swift */,
 				2F81B7E120FA50E9006E6C0D /* ProfileController+Handlers.swift */,
+				2FD070C920ECE70E002634FE /* RegisterController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";

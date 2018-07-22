@@ -162,8 +162,7 @@ class RegisterController: UIViewController {
         setupLoginRegisterButton()
         //setupProfileImageView()
         setupAccountButton()
-        //self.hideKeyBoardWhenTapped()
-        
+        self.hideKeyboardWhenTappedAround()
     }
     
     func setupAccountButton(){
@@ -275,34 +274,7 @@ class RegisterController: UIViewController {
                 guard let uid = user?.user.uid else{
                     return
                 }
-                /*
-                let imageName = NSUUID().uuidString
-                let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).jpg")
-            
-                let image = UIImage(named: "imagem_padrao")
                 
-                if let uploadData = UIImageJPEGRepresentation(image!, 0.25) {
-                    storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
-                        if error != nil {
-                            print(error!)
-                            return
-                        }
-                        
-                        storageRef.downloadURL(completion: { (url, error) in
-                            if error != nil {
-                                print(error!)
-                                return
-                            }
-                            if url != nil {
-                                let profilePicUrl = url?.absoluteString
-                            
-                                self.registerUserIntoDatabaseWithUID(uid: uid, name: name, email: email, profileImageUrl: profilePicUrl)
-                                print("Profile Image successfully uploaded into storage with url: \(String(describing: profilePicUrl))")
-                            }
-
-                        })
-                    })
-                }*/
                 self.registerUserIntoDatabaseWithUID(uid: uid, name: name, email: email)
                 
                 self.enviarEmail()
@@ -376,6 +348,16 @@ class RegisterController: UIViewController {
     
     override open var shouldAutorotate: Bool {
         return false
+    }
+    
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
 

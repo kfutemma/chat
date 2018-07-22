@@ -11,7 +11,7 @@ import Firebase
 
 class ProfileController: UIViewController {
     
-    var messageController: MessageController?
+    var messageController: MessageController? = MessageController()
     
     lazy var scrollView: UIScrollView = {
         let view = UIScrollView()
@@ -38,7 +38,7 @@ class ProfileController: UIViewController {
     lazy var profileImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
-        imageView.image = UIImage(named: "kaique")
+        imageView.image = UIImage(named: "imagem_padrao")
         imageView.layer.cornerRadius = 15
         imageView.layer.borderWidth = 5
         imageView.layer.borderColor = UIColor.white.cgColor
@@ -126,6 +126,15 @@ class ProfileController: UIViewController {
         fetchUser()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let desiredOffset = CGPoint(x: 0, y: -self.scrollView.contentInset.top)
+        UIApplication.shared.statusBarStyle = .lightContent
+        self.scrollView.setContentOffset(desiredOffset, animated: true)
+        fetchUser()
+    }
+    
     func fetchUser() {
         
         guard let uid = Auth.auth().currentUser?.uid else {
@@ -135,11 +144,7 @@ class ProfileController: UIViewController {
         Database.database().reference().child("users/\(uid)").observeSingleEvent(of: .value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let user = User()
-                print("_______________________")
-                print(snapshot)
-                print("_______________________")
-                
-                //user.setValuesForKeys(dictionary)
+
                 user.email = dictionary["email"] as? String
                 user.name = dictionary["name"] as? String
                 user.profileImageUrl = dictionary["profileImageUrl"] as? String
@@ -150,12 +155,6 @@ class ProfileController: UIViewController {
     
     
     func setupUserInfos(user: User) {
-        
-        messageController?.messages.removeAll()
-        messageController?.messagesDictionary.removeAll()
-        messageController?.collectionView?.reloadData()
-        
-        messageController?.observeUserMessages()
         
         if let profileImageUrl = user.profileImageUrl {
             profileImage.loadImagesUsingCacheWithUrlString(urlString: profileImageUrl)
@@ -228,8 +227,5 @@ class ProfileController: UIViewController {
         changePasswordSeparatorView.bottomAnchor.constraint(equalTo: changePasswordButton.topAnchor, constant: -12).isActive = true
         changePasswordSeparatorView.widthAnchor.constraint(equalTo: logoutButton.widthAnchor).isActive = true
         changePasswordSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        
     }
-    
-
 }

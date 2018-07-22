@@ -30,8 +30,8 @@ extension LoginController {
             
             
             if  user?.user.isEmailVerified == true {
-                //self.userID = Auth.auth().currentUser?.uid
                 self.profileController?.fetchUser()
+                self.messagesController?.reloadCollection()
                 self.dismiss(animated: true, completion: nil)
             }
             else {
@@ -53,5 +53,15 @@ extension LoginController {
     @objc func createAccountClick(_ sender: AnyObject?){
         let registerController = RegisterController()
         present(registerController, animated: true, completion: nil)
+    }
+    
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }

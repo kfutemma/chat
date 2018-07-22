@@ -10,31 +10,45 @@ import UIKit
 import Firebase
 
 class MessageController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-
+    
     private let cellId = "cellId"
     
     override func viewDidLoad(){
         super.viewDidLoad()
         
         collectionView?.backgroundColor = UIColor.white
-        //navigationController?.navigationBar.prefersLargeTitles = true
+        collectionView?.alwaysBounceVertical = true
         navigationController?.navigationBar.isTranslucent = false
         self.navigationItem.title = "Conversas"
 
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonSystemItem.add, target: self, action: #selector(handleNewMessage))
+        //navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         
-    
         collectionView?.register(MessageCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.contentInset = UIEdgeInsetsMake(10, 0, 0, 0)
         
         checkIfUserIsLoggedIn()
-        
         observeUserMessages()
-        
     }
     
-    var messages = [Messages]()
-    var messagesDictionary = [String: Messages]()
+    static var messages = [Messages]()
+    static var messagesDictionary = [String: Messages]()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        tabBarController?.tabBar.isHidden = false
+        UIApplication.shared.statusBarStyle = .default
+        observeUserMessages()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
     
     func observeUserMessages() {
         
@@ -46,62 +60,53 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
         
         ref.observe(.childAdded, with: { (snapshot) in
 
-            let messageId = snapshot.key
-            let messagesReference = Database.database().reference().child("messages/\(messageId)")
-            
-            messagesReference.observeSingleEvent(of: .value, with: { (snapshot) in
+            let userId = snapshot.key
+            Database.database().reference().child("user-messages/\(uid)/\(userId)").observe(.childAdded, with: { (snapshot) in
+                let messageId = snapshot.key
+                let messagesReference = Database.database().reference().child("messages/\(messageId)")
                 
-                if let dictionary = snapshot.value as? [String: AnyObject] {
-                    let message = Messages()
+                messagesReference.observeSingleEvent(of: .value, with: { (snapshot) in
                     
-                    message.fromId = dictionary["fromId"] as? String
-                    message.toId = dictionary["toId"] as? String
-                    message.text = dictionary["text"] as? String
-                    message.timestamp = dictionary["timestamp"] as? NSNumber
-                    
-                    if let chatPartnerId = message.chatPartnerId() {
-                        self.messagesDictionary[chatPartnerId] = message
-                        self.messages = Array(self.messagesDictionary.values)
-                        self.messages.sort(by: { (message1, message2) -> Bool in
-                            return (message1.timestamp?.intValue)! > (message2.timestamp?.intValue)!
-                        })
+                    if let dictionary = snapshot.value as? [String: AnyObject] {
+                        let message = Messages()
+                        
+                        message.fromId = dictionary["fromId"] as? String
+                        message.toId = dictionary["toId"] as? String
+                        message.text = dictionary["text"] as? String
+                        message.timestamp = dictionary["timestamp"] as? NSNumber
+                        
+                        if let chatPartnerId = message.chatPartnerId() {
+                            MessageController.messagesDictionary[chatPartnerId] = message
+                        }
+                        self.attemptReloadOfTable()
                     }
-                    
-                    DispatchQueue.main.async(execute: {
-                        self.collectionView?.reloadData()
-                    })
+                }, withCancel: nil)
                 
-                }
             }, withCancel: nil)
             
         }, withCancel: nil)
     }
     
-    func observeMessages() {
-        let ref = Database.database().reference().child("messages")
-        ref.observe(.childAdded, with: { (snapshot) in
-            
-            if let dictionary = snapshot.value as? [String: AnyObject] {
-                let message = Messages()
-                
-                message.fromId = dictionary["fromId"] as? String
-                message.toId = dictionary["toId"] as? String
-                message.text = dictionary["text"] as? String
-                message.timestamp = dictionary["timestamp"] as? NSNumber
-
-                if let toId = message.toId {
-                    self.messagesDictionary[toId] = message
-                    self.messages = Array(self.messagesDictionary.values)
-                    self.messages.sort(by: { (message1, message2) -> Bool in
-                        return (message1.timestamp?.intValue)! > (message2.timestamp?.intValue)!
-                    })
-                }
-                
-                DispatchQueue.main.async(execute: {
-                    self.collectionView?.reloadData()
-                })
-            }
-        }, withCancel: nil)
+    private func attemptReloadOfTable() {
+        self.timer?.invalidate()
+        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
+    }
+    
+    var timer: Timer?
+    
+    @objc func handleReloadTable() {
+        MessageController.messages = Array(MessageController.messagesDictionary.values)
+        MessageController.messages.sort(by: { (message1, message2) -> Bool in
+            return (message1.timestamp?.intValue)! > (message2.timestamp?.intValue)!
+        })
+        
+        DispatchQueue.main.async(execute: {
+            self.collectionView?.reloadData()
+        })
+    }
+    
+    func reloadCollection() {
+        collectionView?.reloadData()
     }
     
     func showChatControllerForUser(user: User) {
@@ -126,6 +131,9 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
     @objc func handleLogout(){
         do{
             try Auth.auth().signOut()
+            MessageController.messages.removeAll()
+            MessageController.messagesDictionary.removeAll()
+            self.collectionView?.reloadData()
         } catch let logoutError {
             print(logoutError)
         }
@@ -134,18 +142,16 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return messages.count
+        return MessageController.messages.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MessageCell
         
-        let message = messages[indexPath.row]
+        let message = MessageController.messages[indexPath.row]
         //----------------------
-        
-        
-        
+
         if let id = message.chatPartnerId() {
             let ref = Database.database().reference().child("users/\(id)")
             
@@ -158,25 +164,29 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
                         cell.profileImageView.loadImagesUsingCacheWithUrlString(urlString: profileImageUrl)
                     }
                 }
-                
             }, withCancel: nil)
         }
         //----------------------
         cell.messageLabel.text = message.text
         
         if let seconds = message.timestamp?.doubleValue {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "h:mm a"
             let timestampDate = NSDate(timeIntervalSince1970: seconds)
             
-            let dateFormatter = DateFormatter()
+            /*let secondInDay: TimeInterval = 60 * 60 * 24
+             
+            if timestampDate > 7 * secondInDay {
+                dateFormatter.dateFormat = "MM/dd/yy"
+            }
+            else if (timestampDate - secondInDay) > secondInDay {
+                dateFormatter.dateFormat = "EEE"
+            }
+            */
             
-            dateFormatter.dateFormat = "hh:mm a"
             cell.timeLabel.text = dateFormatter.string(for: timestampDate)
         }
-        print("passou")
-        
-        
         return cell
-
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -184,7 +194,7 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let message = messages[indexPath.item]
+        let message = MessageController.messages[indexPath.item]
         
         guard let chatPartnerId = message.chatPartnerId() else {
             return
@@ -207,9 +217,7 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
             self.showChatControllerForUser(user: user)
             
         }, withCancel: nil)
-        
     }
-    
 }
 
 //COLOCAR EM OUTRA CLASSE. DAQUI PARA BAIXO
@@ -292,6 +300,15 @@ class MessageCell: BaseCell{
         addConstraintsWithFormat(format: "V:|[v0][v1(24)]|", views: nameLabel, messageLabel)
         addConstraintsWithFormat(format: "H:|[v0]-12-|", views: messageLabel)
         addConstraintsWithFormat(format: "V:|[v0(24)]", views: timeLabel)
+    }
+    
+    override var isHighlighted: Bool {
+        didSet {
+            backgroundColor = isHighlighted ? UIColor(r: 0, g: 134, b: 249) : UIColor.white
+            nameLabel.textColor = isHighlighted ? UIColor.white : UIColor.black
+            timeLabel.textColor = isHighlighted ? UIColor.white : UIColor.black
+            messageLabel.textColor = isHighlighted ? UIColor.white : UIColor.black
+        }
     }
     
 }

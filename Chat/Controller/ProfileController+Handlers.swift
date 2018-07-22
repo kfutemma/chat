@@ -76,15 +76,16 @@ extension ProfileController: UIImagePickerControllerDelegate, UINavigationContro
         dismiss(animated: true, completion: nil)
     }
     
-    @objc func handleLogout(_ sender: AnyObject?){
+     @objc func handleLogout(){
         do{
             try Auth.auth().signOut()
+            MessageController.messages.removeAll()
+            MessageController.messagesDictionary.removeAll()
+            //self.collectionView?.reloadData()
         } catch let logoutError {
             print(logoutError)
         }
-        
-        
         let loginController = LoginController()
         present(loginController, animated: true, completion: nil)
-    }
+     }
 }
