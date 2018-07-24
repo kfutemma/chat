@@ -68,12 +68,7 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
                 messagesReference.observeSingleEvent(of: .value, with: { (snapshot) in
                     
                     if let dictionary = snapshot.value as? [String: AnyObject] {
-                        let message = Messages()
-                        
-                        message.fromId = dictionary["fromId"] as? String
-                        message.toId = dictionary["toId"] as? String
-                        message.text = dictionary["text"] as? String
-                        message.timestamp = dictionary["timestamp"] as? NSNumber
+                        let message = Messages(dictionary: dictionary)
                         
                         if let chatPartnerId = message.chatPartnerId() {
                             MessageController.messagesDictionary[chatPartnerId] = message

@@ -10,12 +10,15 @@ import UIKit
 
 class ChatMessageCell: UICollectionViewCell {
     
+    var chatLogController: ChatLogController?
+    
     let textView:UITextView = {
         let text = UITextView()
         text.font = UIFont.systemFont(ofSize: 16)
         text.textColor = UIColor.white
         text.backgroundColor = UIColor.clear
         text.translatesAutoresizingMaskIntoConstraints = false
+        text.isEditable = false
         
         return text
     }()
@@ -32,15 +35,35 @@ class ChatMessageCell: UICollectionViewCell {
         return view
     }()
     
-    let messageImageView: UIImageView = {
+    let timeView: UILabel = {
+        let lbl = UILabel()
+        lbl.text = "12:05"
+        lbl.textAlignment = .right
+        lbl.textColor = UIColor.white
+        lbl.font = UIFont.boldSystemFont(ofSize: 13)
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        
+        return lbl
+    }()
+    
+    lazy var messageImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 15
         imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomTap)))
         
         return imageView
     }()
+    
+    @objc func handleZoomTap(tapGesture: UITapGestureRecognizer) {
+        
+        if let imageView = tapGesture.view as? UIImageView {
+            self.chatLogController?.performZoomInForStartingImagemView(startingImageView: imageView)
+        }
+    }
     
     var bubbleWidthAnchor: NSLayoutConstraint?
     var bubbleViewRightAnchor: NSLayoutConstraint?
@@ -77,6 +100,13 @@ class ChatMessageCell: UICollectionViewCell {
         messageImageView.topAnchor.constraint(equalTo: bubbleView.topAnchor).isActive = true
         messageImageView.widthAnchor.constraint(equalTo: bubbleView.widthAnchor).isActive = true
         messageImageView.heightAnchor.constraint(equalTo: bubbleView.heightAnchor).isActive = true
+        
+        bubbleView.addSubview(timeView)
+        //timeView.centerYAnchor.constraint(equalTo: bubbleView.centerYAnchor).isActive = true
+        timeView.widthAnchor.constraint(equalTo: bubbleView.widthAnchor).isActive = true
+        timeView.bottomAnchor.constraint(equalTo: bubbleView.bottomAnchor, constant: -4).isActive = true
+        timeView.rightAnchor.constraint(equalTo: bubbleView.rightAnchor, constant: -8).isActive = true
+        timeView.heightAnchor.constraint(equalToConstant: 12).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
