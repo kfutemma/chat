@@ -21,7 +21,9 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
         navigationController?.navigationBar.isTranslucent = false
         self.navigationItem.title = "Conversas"
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonSystemItem.add, target: self, action: #selector(handleNewMessage))
+        //navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonSystemItem.add, target: self, action: #selector(handleNewMessage))
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "new_user"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleNewMessage))
         //navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         
         collectionView?.register(MessageCell.self, forCellWithReuseIdentifier: cellId)
