@@ -19,11 +19,20 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
         collectionView?.backgroundColor = UIColor.white
         collectionView?.alwaysBounceVertical = true
         navigationController?.navigationBar.isTranslucent = false
-        self.navigationItem.title = "Conversas"
+        self.navigationItem.title = "Minhas conversas"
+        
+        let menuBtn = UIButton(type: .custom)
+        menuBtn.frame = CGRect(x: 0.0, y: 0.0, width: 5, height: 5)
+        menuBtn.setImage(UIImage(named:"new_user"), for: .normal)
+        menuBtn.imageEdgeInsets = UIEdgeInsetsMake(5, 8.5, 5, 8.5)
+        menuBtn.addTarget(self, action: #selector(handleNewMessage), for: UIControlEvents.touchUpInside)
+        
 
         //navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonSystemItem.add, target: self, action: #selector(handleNewMessage))
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "new_user"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleNewMessage))
+        //navigationItem.rightBarButtonItem = UIBarButtonItem(image: customButton, style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleNewMessage))
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(customView: menuBtn)
         //navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         
         collectionView?.register(MessageCell.self, forCellWithReuseIdentifier: cellId)
@@ -139,6 +148,12 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        if (MessageController.messages.count == 0) {
+            self.collectionView?.setEmptyMessage("Clique no botão superior à direita para procurar alguém para conversar")
+        } else {
+            self.collectionView?.restore()
+        }
         return MessageController.messages.count
     }
     
@@ -224,7 +239,7 @@ class MessageCell: BaseCell{
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 34
+        imageView.layer.cornerRadius = 12
         imageView.layer.masksToBounds = true
         
         return imageView
@@ -268,12 +283,13 @@ class MessageCell: BaseCell{
         addSubview(dividerLineView)
         setupContainerView()
         
-        profileImageView.image = UIImage(named: "kaique")
+        //profileImageView.image = UIImage(named: "kaique")
         
         // CONSTRAINTS DA FOTO DE PERFIL
         addConstraintsWithFormat(format: "H:|-12-[v0(68)]", views: profileImageView)
         addConstraintsWithFormat(format: "V:[v0(68)]", views: profileImageView)
         addConstraint(NSLayoutConstraint(item: profileImageView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0))
+        
         
         // CONSTRAINTS DO SEPARADOR DE CONVERSA
         addConstraintsWithFormat(format: "H:|-12-[v0]-12-|", views: dividerLineView)
@@ -325,7 +341,24 @@ class BaseCell: UICollectionViewCell{
     }
 }
 
-
+extension UICollectionView {
+    
+    func setEmptyMessage(_ message: String) {
+        let messageLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height))
+        messageLabel.text = message
+        messageLabel.textColor = .black
+        messageLabel.numberOfLines = 0;
+        messageLabel.textAlignment = .center;
+        messageLabel.font = UIFont(name: "Avenir-Light", size: 18)
+        messageLabel.sizeToFit()
+        
+        self.backgroundView = messageLabel;
+    }
+    
+    func restore() {
+        self.backgroundView = nil
+    }
+}
 
 
 

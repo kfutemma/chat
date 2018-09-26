@@ -1,0 +1,18 @@
+{
+  "Mac" : [
+
+  ],
+  "watchOS" : [
+
+  ],
+  "tvOS" : [
+
+  ],
+  "commitish" : "2.0.0",
+  "iOS" : [
+    {
+      "name" : "EasyTipView",
+      "hash" : "5c823bab583c9764262500f6e8d19554ac4b1369be018a3279ab504a4ed08c50"
+    }
+  ]
+}

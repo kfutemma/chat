@@ -39,8 +39,6 @@ class NewMessageController: UITableViewController, UISearchResultsUpdating {
                 let user = User()
                 user.id = snapshot.key
                 
-                //print(snapshot)
-                //user.setValuesForKeys(dictionary)
                 user.email = dictionary["email"] as? String
                 user.name = dictionary["name"] as? String
                 user.profileImageUrl = dictionary["profileImageUrl"] as? String
@@ -71,7 +69,7 @@ class NewMessageController: UITableViewController, UISearchResultsUpdating {
     }
     
     func setupNavigationBar(){
-        //navigationController?.navigationBar.prefersLargeTitles = true
+        
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancelar", style: .plain, target: self, action: #selector(handleCancel))
         navigationItem.searchController = searchController
         navigationItem.title = "Pesquisar"
@@ -109,15 +107,7 @@ class NewMessageController: UITableViewController, UISearchResultsUpdating {
         if searchController.isActive && searchController.searchBar.text != "" {
             return filteredUsers.count
         }
-        /*else if searchController.isActive && searchController.searchBar.text == "" {
-            let noDataLabel: UILabel     = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
-            noDataLabel.text          = "Faça uma pesquisa!"
-            noDataLabel.textColor     = UIColor.black
-            noDataLabel.textAlignment = .center
-            tableView.backgroundView  = noDataLabel
-            tableView.separatorStyle  = .none
-        }*/
-        else/* if searchController.isActive && searchController.searchBar.text != "" && filteredUsers.count == 0*/{
+        else{
             let noDataLabel: UILabel     = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
             noDataLabel.text          = "Faça uma pesquisa!"
             noDataLabel.textColor     = UIColor.black
@@ -130,7 +120,6 @@ class NewMessageController: UITableViewController, UISearchResultsUpdating {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        //let cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellId)
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
         
         

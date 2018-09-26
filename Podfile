@@ -10,6 +10,7 @@ target 'Chat' do
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
+  pod 'EasyTipView', '~> 2.0.0'
   target 'ChatTests' do
     inherit! :search_paths
     # Pods for testing

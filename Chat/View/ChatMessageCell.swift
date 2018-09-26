@@ -58,6 +58,15 @@ class ChatMessageCell: UICollectionViewCell {
         return imageView
     }()
     
+    let playButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "play_icon"), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isUserInteractionEnabled = true
+        
+        return button
+    }()
+    
     @objc func handleZoomTap(tapGesture: UITapGestureRecognizer) {
         
         if let imageView = tapGesture.view as? UIImageView {
@@ -101,8 +110,13 @@ class ChatMessageCell: UICollectionViewCell {
         messageImageView.widthAnchor.constraint(equalTo: bubbleView.widthAnchor).isActive = true
         messageImageView.heightAnchor.constraint(equalTo: bubbleView.heightAnchor).isActive = true
         
+        bubbleView.addSubview(playButton)
+        playButton.centerXAnchor.constraint(equalTo: bubbleView.centerXAnchor).isActive = true
+        playButton.centerYAnchor.constraint(equalTo: bubbleView.centerYAnchor).isActive = true
+        playButton.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        playButton.widthAnchor.constraint(equalToConstant: 32).isActive = true
+        
         bubbleView.addSubview(timeView)
-        //timeView.centerYAnchor.constraint(equalTo: bubbleView.centerYAnchor).isActive = true
         timeView.widthAnchor.constraint(equalTo: bubbleView.widthAnchor).isActive = true
         timeView.bottomAnchor.constraint(equalTo: bubbleView.bottomAnchor, constant: -4).isActive = true
         timeView.rightAnchor.constraint(equalTo: bubbleView.rightAnchor, constant: -8).isActive = true

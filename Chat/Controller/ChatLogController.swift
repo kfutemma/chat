@@ -10,8 +10,11 @@ import UIKit
 import Firebase
 import FirebaseStorage
 import AVFoundation
+import EasyTipView
 
-class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVAudioRecorderDelegate {
+class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVAudioRecorderDelegate, EasyTipViewDelegate {
+    
+    
     
     var messages = [Messages]()
     var bottomConstraint: NSLayoutConstraint?
@@ -20,6 +23,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     var startingImageView: UIImageView?
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
+    var audioPlayer: AVAudioPlayer!
+    
     var user: User? {
         didSet{
             navigationItem.title = user?.name
@@ -31,7 +36,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     let containerView: UIView = {
         let container = UIView()
-        container.backgroundColor = UIColor.white
+        container.backgroundColor = UIColor.init(r: 237, g: 237, b: 237)
         container.translatesAutoresizingMaskIntoConstraints = false
         
         return container
@@ -40,56 +45,80 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     let sendButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Enviar", for: .normal)
+        button.backgroundColor = UIColor.init(r: 0, g: 122, b: 255)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.layer.cornerRadius = 25
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
         
         return button
     }()
     
+    let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 50))
+    
     lazy var inputTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Digite uma mensagem"
+        textField.placeholder = "Toque aqui para escrever"
         textField.backgroundColor = UIColor.white
+        textField.layer.cornerRadius = 25
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = UIColor.lightGray.cgColor
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
+        textField.leftView = paddingView
+        textField.leftViewMode = UITextFieldViewMode.always
         
         return textField
     }()
     
     let separatorView: UIView = {
         let separator = UIView()
-        separator.backgroundColor = UIColor(r: 220, g: 220, b: 220)
+        separator.backgroundColor = UIColor.lightGray
         separator.translatesAutoresizingMaskIntoConstraints = false
         
         return separator
     }()
     
-    lazy var uploadImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "photo_camera")
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.isUserInteractionEnabled = true
-        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleUploadTap)))
+    lazy var uploadImageView: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("  Enviar foto", for: .normal)
+        button.setImage(UIImage(named: "photo_camera"), for: .normal)
+        button.backgroundColor = UIColor.clear
+        button.setTitleColor(UIColor.lightGray, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.semanticContentAttribute = .forceLeftToRight
+        button.addTarget(self, action: #selector(handleUploadTap), for: .touchUpInside)
         
-        return imageView
+        return button
     }()
     
-    lazy var recordImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "mic_icon")
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.isUserInteractionEnabled = true
-        imageView.tintColor = UIColor.lightGray
-        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleRecordTap)))
+    lazy var recordImageView: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("  Enviar áudio", for: .normal)
+        button.setImage(UIImage(named: "mic_icon"), for: .normal)
+        button.backgroundColor = UIColor.clear
+        button.setTitleColor(UIColor.lightGray, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.imageEdgeInsets = UIEdgeInsetsMake(5, 8.5, 5, 8.5)
+        button.addTarget(self, action: #selector(handleRecordTap), for: .touchUpInside)
         
-        return imageView
+        return button
     }()
+    
+    let backItem: UIBarButtonItem = {
+        let button = UIBarButtonItem()
+        button.title = "Voltar"
+        
+        return button
+    }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         collectionView?.backgroundColor = UIColor.white
-        collectionView?.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 58, right: 0)
+        self.navigationController!.navigationBar.topItem!.backBarButtonItem = backItem
+        collectionView?.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 108, right: 0)
         collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         collectionView?.alwaysBounceVertical = true
         collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
@@ -97,6 +126,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         setupInputComponents()
         setupKeyboardObserves()
+        
+        showToolTip()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -116,10 +147,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         tabBarController?.tabBar.isHidden = true
     }
     
-    
+    /*
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         inputTextField.endEditing(true)
-    }
+    }*/
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
@@ -138,12 +169,20 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         setupCell(cell: cell, message: message)
         
         if let text = message.text {
-            cell.bubbleWidthAnchor?.constant = estimateFrameForText(text: text).width + /*32*/ 64
+            cell.bubbleWidthAnchor?.constant = estimateFrameForText(text: text).width + 64
             cell.textView.isHidden = false
+            cell.playButton.isHidden = true
         }
         else if message.imageUrl != nil {
             cell.bubbleWidthAnchor?.constant = 200
             cell.textView.isHidden = true
+            cell.playButton.isHidden = true
+        }
+        else if message.audioUrl != nil {
+            cell.bubbleWidthAnchor?.constant = 175
+            cell.textView.isHidden = true
+            cell.playButton.isHidden = false
+
         }
         
         if let seconds = message.timestamp?.doubleValue {
@@ -243,6 +282,20 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }
     }
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let message = messages[indexPath.row]
+        
+        if let audio = message.audioUrl {
+            
+            handlePlayAudioFromUrl(audioUrl: audio)
+            print(audio)
+            print("tocou")
+            
+        }
+        
+    }
+    
     func observeMessages() {
         guard let uid = Auth.auth().currentUser?.uid, let toId = user?.id else {
             return
@@ -306,35 +359,41 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     func setupInputComponents() {
         
+        //TOOL TIPS PREFERENCES
+        preferences.drawing.font = UIFont(name: "Futura-Medium", size: 13)!
+        preferences.drawing.foregroundColor = UIColor.white
+        preferences.drawing.backgroundColor = UIColor.init(r: 112, g: 213, b: 211)
+        
         view.addSubview(containerView)
         view.addConstraintsWithFormat(format: "H:|[v0]|", views: containerView)
-        view.addConstraintsWithFormat(format: "V:[v0(50)]", views: containerView)
+        view.addConstraintsWithFormat(format: "V:[v0(100)]", views: containerView)
+        
         bottomConstraint = NSLayoutConstraint(item: containerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
         view.addConstraint(bottomConstraint!)
         
         containerView.addSubview(sendButton)
-        sendButton.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
-        sendButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+        sendButton.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -4).isActive = true
+        sendButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -2).isActive = true
         sendButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        sendButton.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
+        sendButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
         
         containerView.addSubview(uploadImageView)
-        uploadImageView.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 8).isActive = true
-        uploadImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-        uploadImageView.widthAnchor.constraint(equalToConstant: 32).isActive = true
-        uploadImageView.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        uploadImageView.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 4).isActive = true
+        uploadImageView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 2).isActive = true
+        uploadImageView.widthAnchor.constraint(equalToConstant: (view.frame.width/2)).isActive = true
+        uploadImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
         
         containerView.addSubview(recordImageView)
-        recordImageView.rightAnchor.constraint(equalTo: sendButton.leftAnchor, constant: 4).isActive = true
-        recordImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-        recordImageView.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        recordImageView.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        recordImageView.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -4).isActive = true
+        recordImageView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 2).isActive = true
+        recordImageView.widthAnchor.constraint(equalToConstant: (view.frame.width/2)).isActive = true
+        recordImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
         
         containerView.addSubview(inputTextField)
-        inputTextField.leftAnchor.constraint(equalTo: uploadImageView.rightAnchor, constant: 8).isActive = true
-        inputTextField.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-        inputTextField.rightAnchor.constraint(equalTo: recordImageView.leftAnchor).isActive = true
-        inputTextField.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
+        inputTextField.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 4).isActive = true
+        inputTextField.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -2).isActive = true
+        inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor, constant: -4).isActive = true
+        inputTextField.heightAnchor.constraint(equalToConstant: 48).isActive = true
         
         containerView.addSubview(separatorView)
         separatorView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
@@ -399,6 +458,35 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }
     }
     
+    @objc func handlePlayAudioFromUrl(audioUrl: String) {
+        
+        var player = AVAudioPlayer()
+        print("entrou")
+        let url = Bundle.main.url(forResource: audioUrl, withExtension: "m4a")
+        
+        do {
+            player = try AVAudioPlayer(contentsOf: url!)
+            player.play()
+        } catch {
+            // couldn't load file :(
+            print("caiu aqui")
+        }
+        /*
+        if let url = URL(string: audioUrl) {
+            do {
+                try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
+                
+                self.audioPlayer = try AVAudioPlayer(contentsOf: url)
+                //audioPlayer?.delegate = self as! AVAudioPlayerDelegate
+                self.audioPlayer?.prepareToPlay()
+                self.audioPlayer?.play()
+                print("Audio ready to play")
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }*/
+    }
+    
     func handleWithAudio(){
         recordingSession = AVAudioSession.sharedInstance()
         AVAudioSession.sharedInstance().requestRecordPermission({ (hasPermission) in
@@ -417,7 +505,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 audioRecorder = try AVAudioRecorder(url: fileName, settings: settings)
                 audioRecorder.delegate = self
                 audioRecorder.record()
-                recordImageView.image = UIImage(named: "stop_recording")
+                //recordImageView.image = UIImage(named: "stop_recording")
+                recordImageView.setImage(UIImage(named: "stop_recording"), for: .normal)
+                recordImageView.imageEdgeInsets = UIEdgeInsetsMake(2, 2, 2, 2)
+                
+                recordImageView.setTitle(" Toque para enviar", for: .normal)
             }
             catch {
                 displayAlert(title: "Erro", message: "Não foi possível gravar.")
@@ -426,7 +518,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         else {
             audioRecorder.stop()
             audioRecorder = nil
-            recordImageView.image = UIImage(named: "mic_icon")
+            //recordImageView.image = UIImage(named: "mic_icon")
+            recordImageView.setImage(UIImage(named: "mic_icon"), for: .normal)
+            recordImageView.setTitle("  Enviar áudio", for: .normal)
             
             let audioName = NSUUID().uuidString
             let fileName = getAudioFileURL()
@@ -453,7 +547,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }
     }
     
-    private func sendAudioWithUrl(audioUrl: String) {
+    @objc private func sendAudioWithUrl(audioUrl: String) {
         let ref = Database.database().reference().child("messages")
         let childRef = ref.childByAutoId()
         
@@ -493,6 +587,20 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Fechar", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
+    }
+    
+    // TIPVIEW FUNCTIONS-------------------
+    
+    var preferences = EasyTipView.Preferences()
+    
+    func showToolTip() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+            EasyTipView.show(forView: self.sendButton, withinSuperview: self.view, text: "Teste", preferences: self.preferences, delegate: self)
+        })
+    }
+    
+    func easyTipViewDidDismiss(_ tipView: EasyTipView) {
+        // do anything
     }
     
     //FIM DO CÓDIGO ChatLogController.swift

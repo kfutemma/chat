@@ -16,7 +16,7 @@ class CustomTabBarController: UITabBarController{
         let layout = UICollectionViewFlowLayout()
         let messageController = MessageController(collectionViewLayout: layout)
         let recentMessagesNavController = UINavigationController(rootViewController: messageController)
-        recentMessagesNavController.tabBarItem.title = "Conversas"
+        recentMessagesNavController.tabBarItem.title = "Minhas conversas"
         recentMessagesNavController.tabBarItem.image = UIImage(named: "talking_icon")
         
         let profileController = ProfileController()
