@@ -27,19 +27,16 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
         menuBtn.imageEdgeInsets = UIEdgeInsetsMake(5, 8.5, 5, 8.5)
         menuBtn.addTarget(self, action: #selector(handleNewMessage), for: UIControlEvents.touchUpInside)
         
-
-        //navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonSystemItem.add, target: self, action: #selector(handleNewMessage))
-        
-        //navigationItem.rightBarButtonItem = UIBarButtonItem(image: customButton, style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleNewMessage))
-        
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(customView: menuBtn)
-        //navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
-        
         collectionView?.register(MessageCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.contentInset = UIEdgeInsetsMake(10, 0, 0, 0)
         
         checkIfUserIsLoggedIn()
         observeUserMessages()
+    }
+    
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
     
     static var messages = [Messages]()
@@ -49,7 +46,6 @@ class MessageController: UICollectionViewController, UICollectionViewDelegateFlo
         super.viewWillAppear(animated)
         
         tabBarController?.tabBar.isHidden = false
-        UIApplication.shared.statusBarStyle = .default
         observeUserMessages()
     }
     

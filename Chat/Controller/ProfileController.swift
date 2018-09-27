@@ -8,11 +8,12 @@
 
 import UIKit
 import Firebase
-import EasyTipView
+import AMPopTip
 
-class ProfileController: UIViewController, EasyTipViewDelegate {
+class ProfileController: UIViewController {
     
     var messageController: MessageController? = MessageController()
+    let popTip = PopTip()
     
     lazy var scrollView: UIScrollView = {
         let view = UIScrollView()
@@ -157,7 +158,7 @@ class ProfileController: UIViewController, EasyTipViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchUser()
-        
+        showToolTip()
     }
     
     func fetchUser() {
@@ -195,9 +196,9 @@ class ProfileController: UIViewController, EasyTipViewDelegate {
     
     func setupScrollView() {
         
-        preferences.drawing.font = UIFont(name: "Futura-Medium", size: 13)!
-        preferences.drawing.foregroundColor = UIColor.white
-        preferences.drawing.backgroundColor = UIColor.init(r: 112, g: 213, b: 211)
+        popTip.bubbleColor = UIColor.black
+        popTip.textColor = UIColor.white
+        
         
         //CONSTRAINTS DA SCROLLVIEW
         view.addSubview(scrollView)
@@ -278,18 +279,14 @@ class ProfileController: UIViewController, EasyTipViewDelegate {
         logoutButton.widthAnchor.constraint(equalTo: emailLabel.widthAnchor).isActive = true
         logoutButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-        showToolTip() 
     }
-    
-    var preferences = EasyTipView.Preferences()
     
     func showToolTip() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-            EasyTipView.show(forView: self.changeNameButton, withinSuperview: self.scrollView, text: "Teste", preferences: self.preferences, delegate: self)
-        })
+        popTip.show(text: "Toque aqui para mudar sua foto de perfil!", direction: .right, maxWidth: 500, in: changePhotoButton, from: self.changePhotoButton.frame, duration: 8)
     }
     
-    func easyTipViewDidDismiss(_ tipView: EasyTipView) {
-        // do anything
+    func hideToolTip() {
+        //popTip.hide()
     }
+    
 }

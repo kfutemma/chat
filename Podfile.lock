@@ -1,4 +1,5 @@
 PODS:
+  - AMPopTip (3.2.1)
   - Firebase/Auth (5.0.1):
     - Firebase/CoreOnly
     - FirebaseAuth (= 5.0.0)
@@ -43,6 +44,7 @@ PODS:
   - nanopb/encode (0.3.8)
 
 DEPENDENCIES:
+  - AMPopTip
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
@@ -50,6 +52,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - AMPopTip
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -63,6 +66,7 @@ SPEC REPOS:
     - nanopb
 
 SPEC CHECKSUMS:
+  AMPopTip: 31251008f2c00cbc0a3d2b18520f277c5b5ab4da
   Firebase: d6861c2059d8c32d1e6dd8932e22ada346d90a3a
   FirebaseAnalytics: 19812b49fa5f283dd6b23edf8a14b5d477029ab8
   FirebaseAuth: acbeef02fe7c3a26624e309849f3fe30c84115af
@@ -75,6 +79,6 @@ SPEC CHECKSUMS:
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
 
-PODFILE CHECKSUM: 2e14c18f9a578f3c7412963f801d0bd33f409c50
+PODFILE CHECKSUM: fa9844512e663a9a46126c18c2ee4dfe88c0cdbd
 
-COCOAPODS: 1.5.2
+COCOAPODS: 1.5.3

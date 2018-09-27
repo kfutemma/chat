@@ -10,9 +10,8 @@ import UIKit
 import Firebase
 import FirebaseStorage
 import AVFoundation
-import EasyTipView
 
-class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVAudioRecorderDelegate, EasyTipViewDelegate {
+class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVAudioRecorderDelegate {
     
     
     
@@ -126,8 +125,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         setupInputComponents()
         setupKeyboardObserves()
-        
-        showToolTip()
+    }
+    
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -142,8 +143,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        UIApplication.shared.statusBarStyle = .default
         tabBarController?.tabBar.isHidden = true
     }
     
@@ -358,11 +357,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     func setupInputComponents() {
-        
-        //TOOL TIPS PREFERENCES
-        preferences.drawing.font = UIFont(name: "Futura-Medium", size: 13)!
-        preferences.drawing.foregroundColor = UIColor.white
-        preferences.drawing.backgroundColor = UIColor.init(r: 112, g: 213, b: 211)
         
         view.addSubview(containerView)
         view.addConstraintsWithFormat(format: "H:|[v0]|", views: containerView)
@@ -587,20 +581,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Fechar", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
-    }
-    
-    // TIPVIEW FUNCTIONS-------------------
-    
-    var preferences = EasyTipView.Preferences()
-    
-    func showToolTip() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-            EasyTipView.show(forView: self.sendButton, withinSuperview: self.view, text: "Teste", preferences: self.preferences, delegate: self)
-        })
-    }
-    
-    func easyTipViewDidDismiss(_ tipView: EasyTipView) {
-        // do anything
     }
     
     //FIM DO CÓDIGO ChatLogController.swift
