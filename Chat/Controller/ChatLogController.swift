@@ -367,7 +367,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         containerView.addSubview(sendButton)
         sendButton.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -4).isActive = true
-        sendButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -2).isActive = true
+        sendButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4).isActive = true
         sendButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
         sendButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
         
@@ -385,7 +385,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         containerView.addSubview(inputTextField)
         inputTextField.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 4).isActive = true
-        inputTextField.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -2).isActive = true
+        inputTextField.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4).isActive = true
         inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor, constant: -4).isActive = true
         inputTextField.heightAnchor.constraint(equalToConstant: 48).isActive = true
         

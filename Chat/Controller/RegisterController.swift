@@ -70,6 +70,25 @@ class RegisterController: UIViewController {
         
         return view
     }()
+    
+    // _______ CAMPO E SEPARADOR DE TELEFONE _______
+    let telephoneTextField: UITextField = {
+        let tf = UITextField()
+        tf.placeholder = "Telefone"
+        tf.keyboardType = .phonePad
+        tf.translatesAutoresizingMaskIntoConstraints = false
+        
+        return tf
+    }()
+    
+    let telephoneSeparatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(r: 220, g:220, b:220)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
     // _______ CAMPOAS DE SENHAS _______
     
     let passwordTextField: UITextField = {
@@ -185,7 +204,7 @@ class RegisterController: UIViewController {
         inputsContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         inputsContainerView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         inputsContainerView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
-        inputsContainerView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        inputsContainerView.heightAnchor.constraint(equalToConstant: 250).isActive = true
         
         // _______ CAMPO DE NOME _______
         inputsContainerView.addSubview(nameTextField)
@@ -194,7 +213,7 @@ class RegisterController: UIViewController {
         nameTextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
         nameTextField.topAnchor.constraint(equalTo: inputsContainerView.topAnchor).isActive = true
         nameTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
-        nameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/4).isActive = true
+        nameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/5).isActive = true
         
         nameSeparatorView.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor).isActive = true
         nameSeparatorView.topAnchor.constraint(equalTo: nameTextField.bottomAnchor).isActive = true
@@ -208,12 +227,26 @@ class RegisterController: UIViewController {
         emailTextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
         emailTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor).isActive = true
         emailTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
-        emailTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/4).isActive = true
+        emailTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/5).isActive = true
         
         emailSeparatorView.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor).isActive = true
         emailSeparatorView.topAnchor.constraint(equalTo: emailTextField.bottomAnchor).isActive = true
         emailSeparatorView.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
         emailSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        
+        // _______ CAMPO DE TELEFONE _______
+        inputsContainerView.addSubview(telephoneTextField)
+        inputsContainerView.addSubview(telephoneSeparatorView)
+        
+        telephoneTextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
+        telephoneTextField.topAnchor.constraint(equalTo: emailSeparatorView.bottomAnchor).isActive = true
+        telephoneTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
+        telephoneTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/5).isActive = true
+        
+        telephoneSeparatorView.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor).isActive = true
+        telephoneSeparatorView.topAnchor.constraint(equalTo: telephoneTextField.bottomAnchor).isActive = true
+        telephoneSeparatorView.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
+        telephoneSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         // _______ CAMPOS DE SENHAS _______
         inputsContainerView.addSubview(passwordTextField)
@@ -221,9 +254,9 @@ class RegisterController: UIViewController {
         inputsContainerView.addSubview(password2TextField)
         
         passwordTextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
-        passwordTextField.topAnchor.constraint(equalTo: emailSeparatorView.bottomAnchor).isActive = true
+        passwordTextField.topAnchor.constraint(equalTo: telephoneSeparatorView.bottomAnchor).isActive = true
         passwordTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
-        passwordTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/4).isActive = true
+        passwordTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/5).isActive = true
         
         passwordSeparatorView.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor).isActive = true
         passwordSeparatorView.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor).isActive = true
@@ -233,7 +266,7 @@ class RegisterController: UIViewController {
         password2TextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
         password2TextField.topAnchor.constraint(equalTo: passwordSeparatorView.bottomAnchor).isActive = true
         password2TextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
-        password2TextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/4).isActive = true
+        password2TextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/5).isActive = true
         
     }
     
@@ -255,7 +288,7 @@ class RegisterController: UIViewController {
     
     @objc func handleRegister(){
         
-        guard let email = emailTextField.text, let password = passwordTextField.text, let password2 = password2TextField.text,let name = nameTextField.text else {
+        guard let email = emailTextField.text, let password = passwordTextField.text, let password2 = password2TextField.text,let name = nameTextField.text, let telephone = telephoneTextField.text else {
             print("Form is not valid")
             return
         }
@@ -275,7 +308,7 @@ class RegisterController: UIViewController {
                     return
                 }
                 
-                self.registerUserIntoDatabaseWithUID(uid: uid, name: name, email: email)
+                self.registerUserIntoDatabaseWithUID(uid: uid, name: name, email: email, telephone: telephone)
                 
                 self.enviarEmail()
                 self.present(self.alertCreateAccount, animated: true, completion: nil)
@@ -292,11 +325,11 @@ class RegisterController: UIViewController {
         }
     }
     
-    private func registerUserIntoDatabaseWithUID(uid: String, name: String, email: String){
+    private func registerUserIntoDatabaseWithUID(uid: String, name: String, email: String, telephone: String){
         let ref = Database.database().reference()
         let usersReference = ref.child("users").child(uid)
         
-        let values = ["name": name, "email": email, "profileImageUrl": "https://firebasestorage.googleapis.com/v0/b/chat-22387.appspot.com/o/default-picture_0_0.png?alt=media&token=014adb7d-eb81-4972-a944-f8716343ab9e"];
+        let values = ["name": name, "email": email, "telephone": telephone, "profileImageUrl": "https://firebasestorage.googleapis.com/v0/b/chat-22387.appspot.com/o/default-picture_0_0.png?alt=media&token=014adb7d-eb81-4972-a944-f8716343ab9e"];
         
         usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
             

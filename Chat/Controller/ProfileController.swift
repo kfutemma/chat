@@ -18,7 +18,7 @@ class ProfileController: UIViewController {
     lazy var scrollView: UIScrollView = {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.contentSize.height = UIScreen.main.bounds.height
+        view.contentSize.height = UIScreen.main.bounds.height + 60
         view.backgroundColor = UIColor.white
         view.alwaysBounceVertical = false
         view.alwaysBounceHorizontal = false
@@ -52,7 +52,6 @@ class ProfileController: UIViewController {
     let nameLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        //label.textColor = UIColor.white
         label.font = UIFont.boldSystemFont(ofSize: 25)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -60,7 +59,6 @@ class ProfileController: UIViewController {
     
     let nameSeparatorView: UIView = {
         let view = UIView()
-        //view.backgroundColor = UIColor(r: 220, g:220, b:220)
         view.backgroundColor = UIColor.black
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -70,9 +68,22 @@ class ProfileController: UIViewController {
     let emailLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.text = "a@a.com"
+        label.text = "email"
+        label.backgroundColor = UIColor.clear
         label.textColor = UIColor.darkGray
-        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+    let telephoneLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.text = "11976140415"
+        label.backgroundColor = UIColor.clear
+        label.textColor = UIColor.darkGray
+        label.font = UIFont.boldSystemFont(ofSize: 18)
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -92,24 +103,23 @@ class ProfileController: UIViewController {
         return button
     }()
     
-    lazy var changePasswordButton: UIButton = {
+    lazy var changeTelephoneButton: UIButton = {
         let button = UIButton(type: UIButtonType.system)
         button.layer.borderWidth = 1.0
-        button.layer.borderColor = UIColor(r: 80, g:101, b:161).cgColor
+        button.layer.borderColor = UIColor(r: 0, g:122, b:255).cgColor
         button.layer.cornerRadius = 5
-        button.setTitle("Trocar minha senha", for: .normal)
+        button.setTitle("Mudar número de telefone", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(UIColor(r: 80, g:101, b:161) , for: .normal)
+        button.setTitleColor(UIColor(r: 0, g:122, b:255) , for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         
-        button.addTarget(self, action: #selector(handleLogout), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleChangeTelephone), for: .touchUpInside)
         
         return button
     }()
     
     let changePasswordSeparatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.red
         view.backgroundColor = UIColor.black
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -119,11 +129,11 @@ class ProfileController: UIViewController {
     lazy var changePhotoButton: UIButton = {
         let button = UIButton(type: UIButtonType.system)
         button.layer.borderWidth = 1.0
-        button.layer.borderColor = UIColor(r: 80, g:101, b:161).cgColor
+        button.layer.borderColor = UIColor(r: 0, g:122, b:255).cgColor
         button.layer.cornerRadius = 5
         button.setTitle("Trocar minha foto de perfil", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(UIColor(r: 80, g:101, b:161) , for: .normal)
+        button.setTitleColor(UIColor(r: 0, g:122, b:255) , for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         
         button.addTarget(self, action: #selector(handleSelectProfileImageView), for: .touchUpInside)
@@ -134,14 +144,14 @@ class ProfileController: UIViewController {
     lazy var changeNameButton: UIButton = {
         let button = UIButton(type: UIButtonType.system)
         button.layer.borderWidth = 1.0
-        button.layer.borderColor = UIColor(r: 80, g:101, b:161).cgColor
+        button.layer.borderColor = UIColor(r: 0, g:122, b:255).cgColor
         button.layer.cornerRadius = 5
         button.setTitle("Trocar meu nome de perfil", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(UIColor(r: 80, g:101, b:161) , for: .normal)
+        button.setTitleColor(UIColor(r: 0, g:122, b:255), for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         
-        button.addTarget(self, action: #selector(handleLogout), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleChangeName), for: .touchUpInside)
         
         return button
     }()
@@ -237,11 +247,18 @@ class ProfileController: UIViewController {
         nameSeparatorView.widthAnchor.constraint(equalTo: nameLabel.widthAnchor).isActive = true
         nameSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
+        //CONSTRAINT DO TELEPHONELABEL
+        scrollView.addSubview(telephoneLabel)
+        telephoneLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        telephoneLabel.topAnchor.constraint(equalTo: nameSeparatorView.bottomAnchor, constant: 12).isActive = true
+        telephoneLabel.widthAnchor.constraint(equalTo: nameLabel.widthAnchor).isActive = true
+        telephoneLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
         //CONSTRAINT DO EMAILLABEL
         scrollView.addSubview(emailLabel)
         emailLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        emailLabel.topAnchor.constraint(equalTo: nameSeparatorView.bottomAnchor, constant: 12).isActive = true
-        emailLabel.widthAnchor.constraint(equalTo: nameSeparatorView.widthAnchor).isActive = true
+        emailLabel.topAnchor.constraint(equalTo: telephoneLabel.bottomAnchor, constant: 12).isActive = true
+        emailLabel.widthAnchor.constraint(equalTo: nameLabel.widthAnchor).isActive = true
         emailLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         //CONSTRAINTS DO SEPARADOR PARA TROCAR SENHA
@@ -266,27 +283,23 @@ class ProfileController: UIViewController {
         changeNameButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         //CONSTRAINTS DO BOTAO DE LOGOUT
-        scrollView.addSubview(changePasswordButton)
-        changePasswordButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        changePasswordButton.topAnchor.constraint(equalTo: changeNameButton.bottomAnchor, constant: 12).isActive = true
-        changePasswordButton.widthAnchor.constraint(equalTo: nameLabel.widthAnchor).isActive = true
-        changePasswordButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        scrollView.addSubview(changeTelephoneButton)
+        changeTelephoneButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        changeTelephoneButton.topAnchor.constraint(equalTo: changeNameButton.bottomAnchor, constant: 12).isActive = true
+        changeTelephoneButton.widthAnchor.constraint(equalTo: nameLabel.widthAnchor).isActive = true
+        changeTelephoneButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         //CONSTRAINTS DO BOTAO DE LOGOUT
         scrollView.addSubview(logoutButton)
         logoutButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        logoutButton.topAnchor.constraint(equalTo: changePasswordButton.bottomAnchor, constant: 12).isActive = true
-        logoutButton.widthAnchor.constraint(equalTo: emailLabel.widthAnchor).isActive = true
+        logoutButton.topAnchor.constraint(equalTo: changeTelephoneButton.bottomAnchor, constant: 12).isActive = true
+        logoutButton.widthAnchor.constraint(equalTo: nameLabel.widthAnchor).isActive = true
         logoutButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
     }
     
     func showToolTip() {
         popTip.show(text: "Toque aqui para mudar sua foto de perfil!", direction: .right, maxWidth: 500, in: changePhotoButton, from: self.changePhotoButton.frame, duration: 8)
-    }
-    
-    func hideToolTip() {
-        //popTip.hide()
     }
     
 }

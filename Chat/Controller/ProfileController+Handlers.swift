@@ -66,8 +66,10 @@ extension ProfileController: UIImagePickerControllerDelegate, UINavigationContro
                     })
                 })
                 
-                profileImage.image = selectedImage
+                //profileImage.image = selectedImage
+                
             }
+            self.profileImage.image = selectedImage
             dismiss(animated: true, completion: nil)
         }
     }
@@ -81,11 +83,61 @@ extension ProfileController: UIImagePickerControllerDelegate, UINavigationContro
             try Auth.auth().signOut()
             MessageController.messages.removeAll()
             MessageController.messagesDictionary.removeAll()
-            //self.collectionView?.reloadData()
         } catch let logoutError {
             print(logoutError)
         }
         let loginController = LoginController()
         present(loginController, animated: true, completion: nil)
      }
+    
+    @objc func handleChangeName(){
+        print("clicou")
+        let changeName = UIAlertController(title: "Mudar nome", message: "", preferredStyle: .alert)
+        changeName.addTextField { (nameChange) in
+            nameChange.text = self.nameLabel.text
+        }
+        
+        changeName.addAction(UIAlertAction(title: "Cancelar", style: .cancel, handler: nil))
+        
+        changeName.addAction(UIAlertAction(title: "Mudar nome", style: .default, handler: { (action) in
+    
+            guard let uid = Auth.auth().currentUser?.uid else{
+                return
+            }
+            
+            let newName = changeName.textFields?.first?.text
+            let databaseRef = Database.database().reference()
+            let userRef = databaseRef.root.child("users")
+            
+            userRef.child("\(uid)/name").setValue(newName!)
+            self.nameLabel.text = newName
+        }))
+        self.present(changeName, animated: true, completion: nil)
+    }
+    
+    @objc func handleChangeTelephone(){
+        print("clicou")
+        let changeName = UIAlertController(title: "Mudar email", message: "", preferredStyle: .alert)
+        changeName.addTextField { (nameChange) in
+            nameChange.text = self.telephoneLabel.text
+            nameChange.keyboardType = .phonePad
+        }
+        
+        changeName.addAction(UIAlertAction(title: "Cancelar", style: .cancel, handler: nil))
+        
+        changeName.addAction(UIAlertAction(title: "Mudar nome", style: .default, handler: { (action) in
+            
+            guard let uid = Auth.auth().currentUser?.uid else{
+                return
+            }
+            
+            let newName = changeName.textFields?.first?.text
+            let databaseRef = Database.database().reference()
+            let userRef = databaseRef.root.child("users")
+            
+            userRef.child("\(uid)/name").setValue(newName!)
+            self.nameLabel.text = newName
+        }))
+        self.present(changeName, animated: true, completion: nil)
+    }
 }
