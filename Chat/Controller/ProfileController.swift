@@ -183,6 +183,7 @@ class ProfileController: UIViewController {
 
                 user.email = dictionary["email"] as? String
                 user.name = dictionary["name"] as? String
+                user.telephone = dictionary["telephone"] as? String
                 user.profileImageUrl = dictionary["profileImageUrl"] as? String
                 self.setupUserInfos(user: user)
             }
@@ -202,13 +203,17 @@ class ProfileController: UIViewController {
         if let profileLabelEmail = user.email {
             emailLabel.text = profileLabelEmail
         }
+        
+        if let profileLabelTelephone = user.telephone {
+            telephoneLabel.text = profileLabelTelephone
+        }
     }
     
     func setupScrollView() {
         
         popTip.bubbleColor = UIColor.black
         popTip.textColor = UIColor.white
-        
+        popTip.delayIn = 5
         
         //CONSTRAINTS DA SCROLLVIEW
         view.addSubview(scrollView)
@@ -299,7 +304,7 @@ class ProfileController: UIViewController {
     }
     
     func showToolTip() {
-        popTip.show(text: "Toque aqui para mudar sua foto de perfil!", direction: .right, maxWidth: 500, in: changePhotoButton, from: self.changePhotoButton.frame, duration: 8)
+        popTip.show(text: "Toque aqui para mudar sua foto de perfil!", direction: .right, maxWidth: 50, in: changePhotoButton, from: self.changePhotoButton.frame, duration: 4)
     }
     
 }

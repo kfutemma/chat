@@ -10,11 +10,11 @@ import UIKit
 import Firebase
 import FirebaseStorage
 import AVFoundation
+import AMPopTip
 
 class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVAudioRecorderDelegate {
     
-    
-    
+    let popTip = PopTip()
     var messages = [Messages]()
     var bottomConstraint: NSLayoutConstraint?
     var startingFrame: CGRect?
@@ -361,6 +361,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         view.addSubview(containerView)
         view.addConstraintsWithFormat(format: "H:|[v0]|", views: containerView)
         view.addConstraintsWithFormat(format: "V:[v0(100)]", views: containerView)
+        popTip.bubbleColor = UIColor.black
+        popTip.textColor = UIColor.white
+        popTip.delayIn = 5
         
         bottomConstraint = NSLayoutConstraint(item: containerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
         view.addConstraint(bottomConstraint!)
@@ -581,6 +584,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Fechar", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
+    }
+    
+    func showToolTip() {
+        //popTip.show(text: "Toque aqui para mudar sua foto de perfil!", direction: .right, maxWidth: 50, in: changePhotoButton, from: self.changePhotoButton.frame, duration: 4)
     }
     
     //FIM DO CÓDIGO ChatLogController.swift

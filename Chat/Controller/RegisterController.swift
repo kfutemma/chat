@@ -185,7 +185,7 @@ class RegisterController: UIViewController {
     }
     
     func setupAccountButton(){
-        //Constraints (Direito, esquerd, superior e inferior)
+        //Constraints (Direito, esquerdo, superior e inferior)
         
         haveAccountButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         haveAccountButton.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -70).isActive = true
@@ -196,11 +196,10 @@ class RegisterController: UIViewController {
         haveAccountSeparatorView.bottomAnchor.constraint(equalTo: haveAccountButton.topAnchor, constant: -12).isActive = true
         haveAccountSeparatorView.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
         haveAccountSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        
     }
     
     func setupInputsContainerView(){
-        //Constraints (Direito, esquerd, superior e inferior)
+        //Constraints (Direito, esquerdo, superior e inferior)
         inputsContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         inputsContainerView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         inputsContainerView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
@@ -271,20 +270,20 @@ class RegisterController: UIViewController {
     }
     
     func setupLoginRegisterButton(){
-        //Constraints (Direito, esquerd, superior e inferior)
+        //Constraints (Direito, esquerdo, superior e inferior)
         loginRegisterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginRegisterButton.topAnchor.constraint(equalTo: inputsContainerView.bottomAnchor, constant: 12).isActive = true
         loginRegisterButton.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
         loginRegisterButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
-    
+    /*
     func setupProfileImageView(){
-        //Constraints (Direito, esquerd, superior e inferior)
+        //Constraints (Direito, esquerdo, superior e inferior)
         profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         profileImageView.bottomAnchor.constraint(equalTo: inputsContainerView.topAnchor, constant: -12).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
-    }
+    }*/
     
     @objc func handleRegister(){
         

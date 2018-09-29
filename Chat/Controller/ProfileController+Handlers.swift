@@ -65,11 +65,9 @@ extension ProfileController: UIImagePickerControllerDelegate, UINavigationContro
                         
                     })
                 })
-                
-                //profileImage.image = selectedImage
-                
+                profileImage.image = selectedImage
             }
-            self.profileImage.image = selectedImage
+            //self.profileImage.image = selectedImage
             dismiss(animated: true, completion: nil)
         }
     }
@@ -117,27 +115,27 @@ extension ProfileController: UIImagePickerControllerDelegate, UINavigationContro
     
     @objc func handleChangeTelephone(){
         print("clicou")
-        let changeName = UIAlertController(title: "Mudar email", message: "", preferredStyle: .alert)
-        changeName.addTextField { (nameChange) in
-            nameChange.text = self.telephoneLabel.text
-            nameChange.keyboardType = .phonePad
+        let telephoneChange = UIAlertController(title: "Mudar número de telefone", message: "", preferredStyle: .alert)
+        telephoneChange.addTextField { (telephoneChange) in
+            telephoneChange.text = self.telephoneLabel.text
+            telephoneChange.keyboardType = .phonePad
         }
         
-        changeName.addAction(UIAlertAction(title: "Cancelar", style: .cancel, handler: nil))
+        telephoneChange.addAction(UIAlertAction(title: "Cancelar", style: .cancel, handler: nil))
         
-        changeName.addAction(UIAlertAction(title: "Mudar nome", style: .default, handler: { (action) in
+        telephoneChange.addAction(UIAlertAction(title: "Mudar número", style: .default, handler: { (action) in
             
             guard let uid = Auth.auth().currentUser?.uid else{
                 return
             }
             
-            let newName = changeName.textFields?.first?.text
+            let newTel = telephoneChange.textFields?.first?.text
             let databaseRef = Database.database().reference()
             let userRef = databaseRef.root.child("users")
             
-            userRef.child("\(uid)/name").setValue(newName!)
-            self.nameLabel.text = newName
+            userRef.child("\(uid)/telephone").setValue(newTel!)
+            self.telephoneLabel.text = newTel
         }))
-        self.present(changeName, animated: true, completion: nil)
+        self.present(telephoneChange, animated: true, completion: nil)
     }
 }
